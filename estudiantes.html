@@ -16,17 +16,24 @@
       <form id="form" class="box" method="POST">
         <div class="field">
           <label class="label">Número de mesa</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              id="mesa"
-              placeholder="Escriba su número de mesa"
-              name="Numero de mesa"
-              required
-              oninput="validateNumber(event)"
-            />
-          </div>
+            <div class="dropdown">
+              <div class="dropdown-trigger">
+                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu3" onclick="openDropdown()">
+                  <span>Seleccionar mesa</span>
+                  <span class="icon is-small">
+                    <i class="fas fa-angle-down" aria-hidden="true"></i>
+                  </span>
+                </button>
+              </div>
+            </div>
+            <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+              <div class="dropdown-content">
+                <a href="#" class="dropdown-item"> Mesa 1 </a>
+                <a href="#" class="dropdown-item"> Mesa 2 </a>
+                <a href="#" class="dropdown-item"> Mesa 3 </a>
+                <a href="#" class="dropdown-item"> Mesa 4 </a>
+              </div>
+            </div>
         </div>
 
         <div class="field">
@@ -79,15 +86,13 @@
   </section>
 
   <script>
-    // Función para validar que solo se ingresen números
-    function validateNumber(event) {
-      var input = event.target;
-      // Reemplaza cualquier valor que no sea un número o un espacio
-      input.value = input.value.replace(/[^0-9]/g, '');
+    // Función para abrir el menú desplegable
+    function openDropdown() {
+      document.getElementById("dropdown-menu3").classList.toggle("is-active");
     }
 
     // Función para manejar el envío del formulario
-      document.getElementById("form").addEventListener("submit", function (event) {
+      document.getElementById("form").addfListener("submit", function (event) {
       event.preventDefault(); // Evitar el comportamiento por defecto del formulario
       document.getElementById("message").textContent = "Enviando...";
       document.getElementById("message").style.display = "block";
@@ -96,7 +101,7 @@
       var mesa = document.getElementById('mesa').value;
 
       // Añadir la palabra "Mesa" al valor del campo "Número de mesa"
-      mesa = 'Mesa ' + mesa;  // Aquí agregamos "Mesa " al inicio
+      // mesa = 'Mesa ' + mesa;  // Aquí agregamos "Mesa " al inicio
 
       var ayudaRevisión = document.querySelector('input[name="Ayuda o revision"]:checked').value;
       var detalles = document.querySelector('textarea[name="Notas"]').value;
@@ -148,6 +153,9 @@
     document.getElementById("closeErrorModal").addEventListener("click", function () {
       document.getElementById("errorModal").classList.remove('is-active');
     });
+
+    
+
   </script>
 
 </body>
