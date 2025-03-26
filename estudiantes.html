@@ -18,7 +18,7 @@
           <label class="label">Número de mesa</label>
             <div class="dropdown">
               <div class="dropdown-trigger">
-                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu3" onclick="openDropdown()">
+                <button class="button" type="button" aria-haspopup="true" aria-controls="dropdown-menu3" onclick="openDropdown()">
                   <span>Seleccionar mesa</span>
                   <span class="icon is-small">
                     <i class="fas fa-angle-down" aria-hidden="true"></i>
@@ -32,6 +32,7 @@
                 <a href="#" class="dropdown-item"> Mesa 2 </a>
                 <a href="#" class="dropdown-item"> Mesa 3 </a>
                 <a href="#" class="dropdown-item"> Mesa 4 </a>
+                <a href="#" class="dropdown-item"> Mesa 5 </a>
               </div>
             </div>
         </div>
@@ -86,57 +87,72 @@
   </section>
 
   <script>
-    // Función para abrir el menú desplegable
+    // Abrir menú desplegable
     function openDropdown() {
       document.getElementById("dropdown-menu3").classList.toggle("is-active");
     }
 
-    // Función para manejar el envío del formulario
-      document.getElementById("form").addfListener("submit", function (event) {
-      event.preventDefault(); // Evitar el comportamiento por defecto del formulario
+    // Seleccionar todos los ítems del menú desplegable
+    const dropdownItems = document.querySelectorAll(".dropdown-item");
+
+    let selectedTable = ""; // Variable para almacenar la mesa seleccionada
+
+    // Escuchar eventos de clic en los ítems del menú desplegable
+    dropdownItems.forEach((item) => {
+      item.addEventListener("click", function (event) {
+        event.preventDefault(); // Prevenir comportamiento predeterminado
+        selectedTable = item.textContent.trim(); // Guardar la mesa seleccionada
+        document.querySelector(".dropdown-trigger button span").textContent = selectedTable;
+        document.getElementById("dropdown-menu3").classList.remove("is-active");
+      });
+    });
+
+    // Enviar formulario
+    document.getElementById("form").addEventListener("submit", function (event) {
+      event.preventDefault(); // Prevent default form behavior
       document.getElementById("message").textContent = "Enviando...";
       document.getElementById("message").style.display = "block";
       document.getElementById("submit-button").disabled = true;
-      // Obtener los valores del formulario
-      var mesa = document.getElementById('mesa').value;
 
-      // Añadir la palabra "Mesa" al valor del campo "Número de mesa"
-      // mesa = 'Mesa ' + mesa;  // Aquí agregamos "Mesa " al inicio
+      // Obtener valores del formulario
+      let ayudaRevisión = document.querySelector('input[name="Ayuda o revision"]:checked')?.value || "";
+      let detalles = document.querySelector('textarea[name="Notas"]').value;
 
-      var ayudaRevisión = document.querySelector('input[name="Ayuda o revision"]:checked').value;
-      var detalles = document.querySelector('textarea[name="Notas"]').value;
+      // Asegurarse de que se haya seleccionado una mesa
+      if (!selectedTable) {
+        document.getElementById("message").textContent = "Por favor, selecciona una mesa.";
+        document.getElementById("submit-button").disabled = false;
+        return;
+      }
 
-      // Crear un objeto con los datos del formulario
-      var formData = new FormData();
-      formData.append("Numero de mesa", mesa);  // Ahora "Mesa X"
+      // Preparar datos para enviar
+      let formData = new FormData();
+      formData.append("Numero de mesa", selectedTable);
       formData.append("Ayuda o revision", ayudaRevisión);
       formData.append("Notas", detalles);
 
-      // Enviar los datos al Google Apps Script (Web App)
+      // Enviar los datos a Google App Scripts
       fetch('https://script.google.com/macros/s/AKfycbzMphGWuUXr7U4_SwOEEubA2O-vErz1vDzl5BODxGLLeSCAbUWqV45_7Dk5Qvjzyay3QA/exec', { 
         method: 'POST',
         body: formData
       })
       .then(response => response.text())
       .then(data => {
-        document.getElementById("message").textContent =
-              "Datos enviados correctamente!";
-            document.getElementById("message").style.display = "block";
-            document.getElementById("message").style.backgroundColor = "green";
-            document.getElementById("message").style.color = "white";
-            document.getElementById("submit-button").disabled = false;
-            document.getElementById("form").reset();
+        document.getElementById("message").textContent = "Datos enviados correctamente!";
+        document.getElementById("message").style.display = "block";
+        document.getElementById("message").style.backgroundColor = "green";
+        document.getElementById("message").style.color = "white";
+        document.getElementById("submit-button").disabled = false;
+        document.getElementById("form").reset();
+        document.querySelector(".dropdown-trigger button span").textContent = "Seleccionar mesa"; // Reset dropdown
 
-            setTimeout(function () {
-              document.getElementById("message").style.display = "none";
-            }, 3000);
+        setTimeout(() => {
+          document.getElementById("message").style.display = "none";
+        }, 3000);
       })
       .catch(error => {
-        // Mostrar el modal de error
-        // Mensaje de error
         console.error(error);
-        document.getElementById("message").textContent =
-          "Ocurrió un error al enviar el formulario.";
+        document.getElementById("message").textContent = "Ocurrió un error al enviar el formulario.";
         document.getElementById("message").style.display = "block";
         document.getElementById("message").style.backgroundColor = "red";
         document.getElementById("message").style.color = "white";
@@ -144,17 +160,6 @@
       });
     });
 
-    // Cerrar el modal de éxito
-    document.getElementById("closeSuccessModal").addEventListener("click", function () {
-      document.getElementById("successModal").classList.remove('is-active');
-    });
-
-    // Cerrar el modal de error
-    document.getElementById("closeErrorModal").addEventListener("click", function () {
-      document.getElementById("errorModal").classList.remove('is-active');
-    });
-
-    
 
   </script>
 
