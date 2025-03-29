@@ -1,3 +1,35 @@
+// Este archivo contiene las funciones para manejar la lógica de la aplicación
+
+// Función para recargar el contenedor de estadísticas
+async function reloadStatsContainer() {
+  try {
+    const data = await getCounts(); // Obtener los datos actualizados
+    const container = document.getElementById('stats-container');
+    container.innerHTML = ''; // Limpiar el contenedor
+    createGroupStats(data.TotalRecords, data.PendingRecords, data.AttempRecords); // Crear estadísticas actualizadas
+  } catch (error) {
+    console.error("Error al recargar el contenedor de estadísticas:", error);
+  }
+}
+
+// Función para recargar el contenedor de mensajes
+async function reloadMessagesContainer() {
+  try {
+    const messages = await getGroups(); // Obtener los mensajes actualizados
+    const container = document.getElementById('messages-container');
+    container.innerHTML = ''; // Limpiar el contenedor
+    messages.forEach(msg => createMessage(msg.id, msg.title, msg.body, msg.comments)); // Crear mensajes actualizados
+  } catch (error) {
+    console.error("Error al recargar el contenedor de mensajes:", error);
+  }
+}
+
+// Configurar intervalos para recargar los contenedores periódicamente
+setInterval(reloadStatsContainer, 10000); // Recargar cada 10 segundos
+setInterval(reloadMessagesContainer, 10000); // Recargar cada 10 segundos
+
+// Función para hacer la solicitud GET y obtener los grupos
+// de Google Sheets
 async function getGroups() {
   try {
     const scriptUrl = 'https://script.google.com/macros/s/AKfycbwvYx83H9cqgXqSQ7bvmxrvpy0qZUfxA5N2Dxcqik9uUGe-3b7uv7hzuQd2hugFaJgawA/exec';
@@ -30,6 +62,8 @@ async function getGroups() {
   }
 }
 
+// Función para hacer la solicitud GET para obtener los conteos
+// de registros de Google Sheets
 async function getCounts() {
   try {
     const scriptUrl = 'https://script.google.com/macros/s/AKfycbxjza6Fx-ikp-aiqEasUg7KjC6i71eywGG0r0xQhods55cVOlqIhh4QKB6Ah-v5-x2KoQ/exec';
@@ -73,7 +107,8 @@ async function updateDateById(id) {
   }
 }
 
-
+// Función para crear el elemento de estadísticas
+// y agregarlo al contenedor
 function createGroupStats(registered, pending, attended) {
   const nav = document.createElement('nav');
   nav.className = "level";
@@ -112,7 +147,7 @@ function createGroupStats(registered, pending, attended) {
   }
 }
 
-
+// Función para crear un mensaje
 function createMessage(id, title, body, comments) {
   const article = document.createElement('article');
   article.className = "message is-info"; // Cambiar a "is-dark" si prefieres
