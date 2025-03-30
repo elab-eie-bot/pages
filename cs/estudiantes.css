@@ -10,13 +10,14 @@
     overflow: visible;
   }
   .title {
-    color: #33cc33;
+    color: #005da4;
   }
   #form {
     background-color: #e0e0e0;
   }
   .dropdown {
     position: relative;
+    width: 100%;;
   }
   .dropdown-menu {
     position: absolute;
