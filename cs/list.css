@@ -75,6 +75,9 @@ body {
   .messages-container {
     flex-grow: 0; /* Evita que el contenedor de mensajes se extienda */
     margin-bottom: auto; /* Empuja el botón hacia el fondo */
+    display: block;
+    width: 90%;
+    margin: 0 auto;
   }
 
   #delete-group-button {
