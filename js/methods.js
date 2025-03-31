@@ -6,7 +6,7 @@ async function reloadStatsContainer() {
     const data = await getCounts(); // Obtener los datos actualizados
     const container = document.getElementById('stats-container');
     container.innerHTML = ''; // Limpiar el contenedor
-    createGroupStats(data.TotalRecords, data.PendingRecords, data.AttempRecords); // Crear estadísticas actualizadas
+    createGroupStats(10, data.PendingRecords, data.AttendedRecords); // Crear estadísticas actualizadas
   } catch (error) {
     console.error("Error al recargar el contenedor de estadísticas:", error);
   }
@@ -32,7 +32,7 @@ setInterval(reloadMessagesContainer, 10000); // Recargar cada 10 segundos
 // de Google Sheets
 async function getGroups() {
   try {
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbwvYx83H9cqgXqSQ7bvmxrvpy0qZUfxA5N2Dxcqik9uUGe-3b7uv7hzuQd2hugFaJgawA/exec';
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbykDGdJMBaVQ9hrxXuv7N5jfaSRvLAupX7NOeN2TPT2JBoV9mZSQ-qQZgPIhvuQ5_k4/exec';
     const response = await fetch(scriptUrl);
 
     if (!response.ok) {
@@ -66,7 +66,8 @@ async function getGroups() {
 // de registros de Google Sheets
 async function getCounts() {
   try {
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbxjza6Fx-ikp-aiqEasUg7KjC6i71eywGG0r0xQhods55cVOlqIhh4QKB6Ah-v5-x2KoQ/exec';
+    // URL del script de Google Apps Script: Sistema-Turnos-Get-Stats
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbwOYGrKG_blKSAcPoTAInMBLmP7MueUYUyr_xTQi5_ivP6pgf9hpi8TN-YUfB7rHnOz/exec';
     const response = await fetch(scriptUrl);
 
     if (!response.ok) {
@@ -86,7 +87,7 @@ async function getCounts() {
 async function updateDateById(id) {
   try {
     console.log("Update group: ", id);
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbydBUiRGssta6wkN0VyJLazAaz0xVCufp0tMp0yYolwmKNZ_f0E2FZWVbMdBfrhVibjJw/exec';
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbzj5S6XaKWABESLs4GAcTKre10_XbuUOOFK5vZW20Pvk0Qxvz_6w0zEeIzObsXKXhad/exec';
     const formDataString = `id=${encodeURIComponent(id)}`;
     const response = await fetch(scriptUrl, {
       method: 'POST',
@@ -212,7 +213,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   const data = await getCounts();
   const messages = await getGroups(); // Esperar a que se obtengan los mensajes
-  createGroupStats(data.TotalRecords, data.PendingRecords, data.AttempRecords); // Puedes cambiar estos números según los datos reales
+  createGroupStats(10, data.PendingRecords, 0); // Puedes cambiar estos números según los datos reales
 
   console.log(messages); // Para verificar que se obtienen los mensajes
 
