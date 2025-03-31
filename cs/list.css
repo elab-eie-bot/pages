@@ -84,6 +84,8 @@ body {
 
   #delete-group-button {
     margin: 20px auto; /* Centrar el botón */
+    margin-top: 70px; /* Espacio superior */
+    margin-bottom: 70px; /* Espacio inferior */
     width: 200px; /* Establece un ancho específico para el botón */
   }
 
