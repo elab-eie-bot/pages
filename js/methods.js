@@ -32,7 +32,7 @@ setInterval(reloadMessagesContainer, 10000); // Recargar cada 10 segundos
 // de Google Sheets
 async function getGroups() {
   try {
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbykDGdJMBaVQ9hrxXuv7N5jfaSRvLAupX7NOeN2TPT2JBoV9mZSQ-qQZgPIhvuQ5_k4/exec';
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbzL8mQcHxcwcr5-FFKROOlu64w8294lOFNl9w2SDYUObq9ttfLclJPzcb1UOoOZOdLF/exec';
     const response = await fetch(scriptUrl);
 
     if (!response.ok) {
@@ -43,10 +43,10 @@ async function getGroups() {
 
     // Crear la constante messages
     const messages = data.map(row => ({
-      id: row[0],
-      title: row[1], // Columna B
-      body: row[2],   // Columna C
-      comments: row[3]
+      id: row[1],
+      title: row[2], // Columna B
+      body: row[3],   // Columna C
+      comments: row[4]
       
     }));
 
@@ -67,7 +67,7 @@ async function getGroups() {
 async function getCounts() {
   try {
     // URL del script de Google Apps Script: Sistema-Turnos-Get-Stats
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbwOYGrKG_blKSAcPoTAInMBLmP7MueUYUyr_xTQi5_ivP6pgf9hpi8TN-YUfB7rHnOz/exec';
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbyh7NTZv5V4QA3OAkj8bXIIdgkbz6EEtuxn9XuOGEHMxPtihW6j29LBvflAeBk_q73e/exec';
     const response = await fetch(scriptUrl);
 
     if (!response.ok) {
@@ -87,7 +87,7 @@ async function getCounts() {
 async function updateDateById(id) {
   try {
     console.log("Update group: ", id);
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbzj5S6XaKWABESLs4GAcTKre10_XbuUOOFK5vZW20Pvk0Qxvz_6w0zEeIzObsXKXhad/exec';
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbzhK3v7-Aw03fJ4oazDvmsGWCYgUDK1avwC-1riZdO84VWabuUoOhNVbvInoHhXHww8/exec';
     const formDataString = `id=${encodeURIComponent(id)}`;
     const response = await fetch(scriptUrl, {
       method: 'POST',

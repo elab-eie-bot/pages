@@ -28,16 +28,6 @@
             </div>
             <div class="dropdown-menu" id="dropdown-menu3" role="menu">
               <div class="dropdown-content">
-                <a href="#" class="dropdown-item"> Mesa 1 </a>
-                <a href="#" class="dropdown-item"> Mesa 2 </a>
-                <a href="#" class="dropdown-item"> Mesa 3 </a>
-                <a href="#" class="dropdown-item"> Mesa 4 </a>
-                <a href="#" class="dropdown-item"> Mesa 5 </a>
-                <a href="#" class="dropdown-item"> Mesa 6 </a>
-                <a href="#" class="dropdown-item"> Mesa 7 </a>
-                <a href="#" class="dropdown-item"> Mesa 8 </a>
-                <a href="#" class="dropdown-item"> Mesa 9 </a>
-                <a href="#" class="dropdown-item"> Mesa 10 </a>
               </div>
             </div>
         </div>
@@ -92,15 +82,50 @@
   </section>
 
   <script>
+
+    // Cargar las mesas desde Google Sheets
+    function loadDropdownOptions() {
+      const scriptURL = 'https://script.google.com/macros/s/AKfycbw9EKgyDy_0lYWgUIKFexm-ioxeCMTmHgXPqontCt1dgJ2vSe4mHmn3rVyOInfJJXm5/exec';
+
+      let selectedTable = ''; // Variable para almacenar la mesa seleccionada
+
+      fetch(scriptURL)
+        .then(response => response.json())
+        .then(data => {
+          const dropdownContent = document.querySelector('.dropdown-content');
+          dropdownContent.innerHTML = ''; // Limpiar opciones anteriores
+          data.forEach(mesa => {
+            const option = document.createElement('a');
+            option.classList.add('dropdown-item');
+            option.href = '#';
+            option.textContent = mesa;
+            dropdownContent.appendChild(option);
+
+            // Agregar evento de clic a cada opción
+            option.addEventListener('click', function (event) {
+              event.preventDefault(); // Prevenir comportamiento predeterminado
+              selectedTable = mesa; // Guardar la mesa seleccionada
+              document.querySelector(".dropdown-trigger button span").textContent = selectedTable;
+              document.getElementById("dropdown-menu3").classList.remove("is-active");
+            });
+          });
+        })
+        .catch(error => console.error('Error al cargar las mesas:', error));
+    }
+
+    // Cargar las opciones al cargar la página
+    document.addEventListener("DOMContentLoaded", function () {
+      loadDropdownOptions();
+    });
+
     // Abrir menú desplegable
     function openDropdown() {
       document.getElementById("dropdown-menu3").classList.toggle("is-active");
+      loadDropdownOptions(); // Cargar opciones al abrir el menú
     }
 
     // Seleccionar todos los ítems del menú desplegable
     const dropdownItems = document.querySelectorAll(".dropdown-item");
-
-    let selectedTable = ""; // Variable para almacenar la mesa seleccionada
 
     // Escuchar eventos de clic en los ítems del menú desplegable
     dropdownItems.forEach((item) => {
@@ -137,7 +162,7 @@
       formData.append("Notas", detalles);
 
       // Enviar los datos a Google App Scripts
-      fetch('https://script.google.com/macros/s/AKfycbxhn8hOsOjaGDDtdFgIN_OFFUFXNgjmilym0kBwARiHmxzwRIj9iMcL3PpaLVbNFi9F/exec', { 
+      fetch('https://script.google.com/macros/s/AKfycbzX_m5ffPGWT_BMgzA25-m6RCeDTdJQsjZ8Lbd5bkYoWq8drnb7zzMF43MaGCshviYe/exec', { 
         method: 'POST',
         body: formData
       })
