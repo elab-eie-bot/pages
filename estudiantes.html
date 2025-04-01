@@ -1,3 +1,12 @@
+<!--!
+    @file estudiantes.html
+    @brief Este archivo HTML contiene el formulario para solicitar asistencia en la mesa de examen.
+    @details El formulario incluye un menú desplegable para seleccionar la mesa, opciones de ayuda o revisión, y un campo de texto para detalles adicionales.
+    @author Elab
+    @version 1.0
+    @last-modified 2025-03-31
+-->
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -10,9 +19,18 @@
 </head>
 
 <body>
+  <!--!
+    @section header Este es el encabezado de la página.
+    @details Contiene el título.
+  -->
   <section class="section">
     <div class="container">
       <h1 class="title">Solicitar Asistencia</h1>
+
+      <!--!
+        @section request-form Este es el formulario de solicitud.
+        @details Contiene un menú desplegable para seleccionar la mesa, opciones de ayuda o revisión, y un campo de texto para detalles adicionales.
+      -->
       <form id="form" class="box" method="POST">
         <div class="field">
           <label class="label">Número de mesa</label>
@@ -53,6 +71,10 @@
           </div>
         </div>
 
+        <!--!
+          @section submit-button Este es el botón de envío.
+          @details Contiene el botón para enviar el formulario y otro para cancelar.
+        -->
         <div class="field is-grouped">
           <div class="control">
             <button class="button is-primary" type="submit" id="submit-button">
