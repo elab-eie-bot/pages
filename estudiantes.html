@@ -82,41 +82,37 @@
   </section>
 
   <script>
-
     // Cargar las mesas desde Google Sheets
-    function loadDropdownOptions() {
-      const scriptURL = 'https://script.google.com/macros/s/AKfycbw9EKgyDy_0lYWgUIKFexm-ioxeCMTmHgXPqontCt1dgJ2vSe4mHmn3rVyOInfJJXm5/exec';
-
-      let selectedTable = ''; // Variable para almacenar la mesa seleccionada
-
-      fetch(scriptURL)
-        .then(response => response.json())
-        .then(data => {
-          const dropdownContent = document.querySelector('.dropdown-content');
-          dropdownContent.innerHTML = ''; // Limpiar opciones anteriores
-          data.forEach(mesa => {
-            const option = document.createElement('a');
-            option.classList.add('dropdown-item');
-            option.href = '#';
-            option.textContent = mesa;
-            dropdownContent.appendChild(option);
-
-            // Agregar evento de clic a cada opción
-            option.addEventListener('click', function (event) {
-              event.preventDefault(); // Prevenir comportamiento predeterminado
-              selectedTable = mesa; // Guardar la mesa seleccionada
-              document.querySelector(".dropdown-trigger button span").textContent = selectedTable;
-              document.getElementById("dropdown-menu3").classList.remove("is-active");
-            });
-          });
-        })
-        .catch(error => console.error('Error al cargar las mesas:', error));
+    async function loadDropdownOptions() {
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwelWA-J3V2vvNPoQyY4_M_ID2pMzJfBvSQm_NgvWWbgk13wQ7R96RxzENKoLi-5r3C/exec';
+    fetch(scriptURL)
+      .then(response => response.json())
+      .then(function(data) {
+        jsonData = data;
+        getTables(jsonData);
+      })
     }
 
-    // Cargar las opciones al cargar la página
-    document.addEventListener("DOMContentLoaded", function () {
-      loadDropdownOptions();
-    });
+    // Cargar las mesas desde el JSON
+    function getTables(jsonData) {
+      let options = ""; // Inicializar variable de opciones
+      for (let mesa in jsonData) {
+        options += `<a href="#" class="dropdown-item">${jsonData[mesa]}</a>`;
+      }
+      const tables = document.querySelector(".dropdown-content");
+      tables.innerHTML = options; // Asignar las opciones al menú desplegable
+
+      const dropdownItems = document.querySelectorAll(".dropdown-item");
+      dropdownItems.forEach((item) => {
+        // Escuchar eventos de clic en los ítems del menú desplegable
+        item.addEventListener("click", function (event) {
+          event.preventDefault(); // Prevenir comportamiento predeterminado
+          selectedTable = item.textContent.trim(); // Guardar la mesa seleccionada
+          document.querySelector(".dropdown-trigger button span").textContent = selectedTable;
+          document.getElementById("dropdown-menu3").classList.remove("is-active");
+        });
+      });
+    }
 
     // Abrir menú desplegable
     function openDropdown() {
