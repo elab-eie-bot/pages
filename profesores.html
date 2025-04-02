@@ -10,9 +10,34 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
   
   <!-- Hoja de estilos adicional -->
-  <link rel="stylesheet" href="cs/list.css">
+  <link rel="stylesheet" href="cs/profesores.css">
 
   <!-- Meta charset duplicado eliminado -->
+  <script>
+    // Verificar si el usuario está autenticado antes de mostrar la página
+    function checkUserAuthentication() {
+      // URL de Google App Script
+      fetch('https://script.google.com/macros/s/AKfycbxHCXQLhiRpVq8ssrzwjNqX5kQCAOFiL5BGzNb_6sTsokyadhei8AFDrMQ3PHT2n53m/exechttps://script.google.com/macros/s/AKfycbzGy2b3RSz1-TkZMlTBDm4R82kNY5qxcEILUNp_q5DGR82tiMCvW1dYPAQrTfOgWu4n/exechttps://script.google.com/macros/s/AKfycbw_nagOuPI3Ivf-W3CyoK7YvmJ40oFR5Ghdxp-OCbQ3aXUHjynrdecathxvlag7LOOh/exec', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(status => {
+        if (!status.loggedIn || !status.authorized) {
+          window.location.href = 'login.html'; // Redirigir al login si no está autenticado
+        }
+      })
+      .catch(error => {
+        console.error('Error en la autenticación:', error);
+        window.location.href = 'login.html'; // En caso de error, redirigir al login
+      });
+    }
+
+    // Llamar a la verificación al cargar la página
+    window.onload = checkUserAuthentication;
+  </script>
 </head>
 
 <body>
