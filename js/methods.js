@@ -3,10 +3,13 @@
 // Función para recargar el contenedor de estadísticas
 async function reloadStatsContainer() {
   try {
-    const data = await getCounts(); // Obtener los datos actualizados
+    // Obtener estadísticas
+    var stats = await getCount();
+
+    // Actualizar el contenedor
     const container = document.getElementById('stats-container');
     container.innerHTML = ''; // Limpiar el contenedor
-    createGroupStats(10, data.PendingRecords, data.AttendedRecords); // Crear estadísticas actualizadas
+    createGroupStats(stats.TotalOptions, stats.OpenRequests);
   } catch (error) {
     console.error("Error al recargar el contenedor de estadísticas:", error);
   }
@@ -62,24 +65,25 @@ async function getGroups() {
   }
 }
 
-// Función para hacer la solicitud GET para obtener los conteos
-// de registros de Google Sheets
-async function getCounts() {
+async function getCount() {
+  var stats = {};
   try {
-    // URL del script de Google Apps Script: Sistema-Turnos-Get-Stats
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbyh7NTZv5V4QA3OAkj8bXIIdgkbz6EEtuxn9XuOGEHMxPtihW6j29LBvflAeBk_q73e/exec';
-    const response = await fetch(scriptUrl);
+    // Esperar a que se obtenga la respuesta de fetch
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwelWA-J3V2vvNPoQyY4_M_ID2pMzJfBvSQm_NgvWWbgk13wQ7R96RxzENKoLi-5r3C/exec';
+    const response = await fetch(scriptURL);
+    const options = await response.json(); // Obtener los datos de fetch
+    
+    // Esperar a que se obtengan los mensajes
+    const messages = await getGroups(); // Obtener los mensajes
 
-    if (!response.ok) {
-      throw new Error("Error en la solicitud");
-    }
+    // Crear parámetros del objeto stats
+    stats.TotalOptions = options.length;  // Total de opciones
+    stats.OpenRequests = messages.length;  // Total de mensajes abiertos
 
-    const data = await response.json();
-    return data;
-
+    return stats; // Devolver los stats calculados
   } catch (error) {
-    console.error("Error al obtener los datos:", error);
-    return []; // Retornar un arreglo vacío en caso de error
+    console.error('Error obteniendo los datos:', error);
+    return stats; // En caso de error, devolver el objeto stats vacío
   }
 }
 
@@ -110,14 +114,13 @@ async function updateDateById(id) {
 
 // Función para crear el elemento de estadísticas
 // y agregarlo al contenedor
-function createGroupStats(registered, pending, attended) {
+function createGroupStats(registered, pending) {
   const nav = document.createElement('nav');
   nav.className = "level";
 
   const stats = [
     { heading: 'Grupos Registrados', title: registered },
     { heading: 'Grupos Pendientes', title: pending },
-    { heading: 'Grupos Atendidos', title: attended },
   ];
 
   stats.forEach(stat => {
@@ -214,9 +217,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
-  const data = await getCounts();
   const messages = await getGroups(); // Esperar a que se obtengan los mensajes
-  createGroupStats(10, data.PendingRecords, 0); // Puedes cambiar estos números según los datos reales
+
+  // Cargar estadísticas
+  var stats = await getCount();
+  createGroupStats(stats.TotalOptions, stats.OpenRequests); // Puedes cambiar estos números según los datos reales
 
   console.log(messages); // Para verificar que se obtienen los mensajes
 
