@@ -192,7 +192,10 @@ async function deleteFirstMessage() {
     messageContainer.removeChild(firstMessage);
 
     console.log("Primer mensaje eliminado y fecha actualizada.");
-    window.location.reload();
+    
+    // Recargar las ventanas sin recargar toda la página
+    reloadStatsContainer();
+    reloadMessagesContainer();
   } else {
     console.log("No hay mensajes para eliminar.");
   }
