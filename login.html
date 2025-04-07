@@ -46,7 +46,7 @@
       const password = document.getElementById('password').value;
 
       // URL del endpoint del Google Apps Script
-      const scriptUrl = 'https://script.google.com/macros/s/AKfycbxHCXQLhiRpVq8ssrzwjNqX5kQCAOFiL5BGzNb_6sTsokyadhei8AFDrMQ3PHT2n53m/exechttps://script.google.com/macros/s/AKfycbzGy2b3RSz1-TkZMlTBDm4R82kNY5qxcEILUNp_q5DGR82tiMCvW1dYPAQrTfOgWu4n/exechttps://script.google.com/macros/s/AKfycbw_nagOuPI3Ivf-W3CyoK7YvmJ40oFR5Ghdxp-OCbQ3aXUHjynrdecathxvlag7LOOh/exec';
+      const scriptUrl = 'https://script.google.com/macros/s/AKfycbw_nagOuPI3Ivf-W3CyoK7YvmJ40oFR5Ghdxp-OCbQ3aXUHjynrdecathxvlag7LOOh/exec';
 
       // Usar fetch para hacer la solicitud GET al Google Apps Script
       fetch(`${scriptUrl}?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`)
