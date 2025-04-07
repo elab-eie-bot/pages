@@ -91,7 +91,7 @@ async function getCount() {
 async function updateDateById(id) {
   try {
     console.log("Update group: ", id);
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbzhK3v7-Aw03fJ4oazDvmsGWCYgUDK1avwC-1riZdO84VWabuUoOhNVbvInoHhXHww8/exec';
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbwDjWQxfxUyX1PbTV3VcyhiTkzMCQXhyqfm9H4em3SJKVOAdMpoWgN2nY7dFVDWg2NE/exec';
     const formDataString = `id=${encodeURIComponent(id)}`;
     const response = await fetch(scriptUrl, {
       method: 'POST',
