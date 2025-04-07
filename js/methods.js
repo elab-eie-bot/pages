@@ -1,6 +1,41 @@
+// Este archivo contiene las funciones para manejar la lógica de la aplicación
+
+// Función para recargar el contenedor de estadísticas
+async function reloadStatsContainer() {
+  try {
+    // Obtener estadísticas
+    var stats = await getCount();
+
+    // Actualizar el contenedor
+    const container = document.getElementById('stats-container');
+    container.innerHTML = ''; // Limpiar el contenedor
+    createGroupStats(stats.TotalOptions, stats.OpenRequests);
+  } catch (error) {
+    console.error("Error al recargar el contenedor de estadísticas:", error);
+  }
+}
+
+// Función para recargar el contenedor de mensajes
+async function reloadMessagesContainer() {
+  try {
+    const messages = await getGroups(); // Obtener los mensajes actualizados
+    const container = document.getElementById('messages-container');
+    container.innerHTML = ''; // Limpiar el contenedor
+    messages.forEach(msg => createMessage(msg.id, msg.title, msg.body, msg.comments)); // Crear mensajes actualizados
+  } catch (error) {
+    console.error("Error al recargar el contenedor de mensajes:", error);
+  }
+}
+
+// Configurar intervalos para recargar los contenedores periódicamente
+setInterval(reloadStatsContainer, 10000); // Recargar cada 10 segundos
+setInterval(reloadMessagesContainer, 10000); // Recargar cada 10 segundos
+
+// Función para hacer la solicitud GET y obtener los grupos
+// de Google Sheets
 async function getGroups() {
   try {
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbwvYx83H9cqgXqSQ7bvmxrvpy0qZUfxA5N2Dxcqik9uUGe-3b7uv7hzuQd2hugFaJgawA/exec';
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbzL8mQcHxcwcr5-FFKROOlu64w8294lOFNl9w2SDYUObq9ttfLclJPzcb1UOoOZOdLF/exec';
     const response = await fetch(scriptUrl);
 
     if (!response.ok) {
@@ -11,10 +46,10 @@ async function getGroups() {
 
     // Crear la constante messages
     const messages = data.map(row => ({
-      id: row[0],
-      title: row[1], // Columna B
-      body: row[2],   // Columna C
-      comments: row[3]
+      id: row[1],
+      title: row[2], // Columna B
+      body: row[3],   // Columna C
+      comments: row[4]
       
     }));
 
@@ -30,21 +65,25 @@ async function getGroups() {
   }
 }
 
-async function getCounts() {
+async function getCount() {
+  var stats = {};
   try {
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbxjza6Fx-ikp-aiqEasUg7KjC6i71eywGG0r0xQhods55cVOlqIhh4QKB6Ah-v5-x2KoQ/exec';
-    const response = await fetch(scriptUrl);
+    // Esperar a que se obtenga la respuesta de fetch
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwelWA-J3V2vvNPoQyY4_M_ID2pMzJfBvSQm_NgvWWbgk13wQ7R96RxzENKoLi-5r3C/exec';
+    const response = await fetch(scriptURL);
+    const options = await response.json(); // Obtener los datos de fetch
+    
+    // Esperar a que se obtengan los mensajes
+    const messages = await getGroups(); // Obtener los mensajes
 
-    if (!response.ok) {
-      throw new Error("Error en la solicitud");
-    }
+    // Crear parámetros del objeto stats
+    stats.TotalOptions = options.length;  // Total de opciones
+    stats.OpenRequests = messages.length;  // Total de mensajes abiertos
 
-    const data = await response.json();
-    return data;
-
+    return stats; // Devolver los stats calculados
   } catch (error) {
-    console.error("Error al obtener los datos:", error);
-    return []; // Retornar un arreglo vacío en caso de error
+    console.error('Error obteniendo los datos:', error);
+    return stats; // En caso de error, devolver el objeto stats vacío
   }
 }
 
@@ -52,7 +91,7 @@ async function getCounts() {
 async function updateDateById(id) {
   try {
     console.log("Update group: ", id);
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbydBUiRGssta6wkN0VyJLazAaz0xVCufp0tMp0yYolwmKNZ_f0E2FZWVbMdBfrhVibjJw/exec';
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbwDjWQxfxUyX1PbTV3VcyhiTkzMCQXhyqfm9H4em3SJKVOAdMpoWgN2nY7dFVDWg2NE/exec';
     const formDataString = `id=${encodeURIComponent(id)}`;
     const response = await fetch(scriptUrl, {
       method: 'POST',
@@ -73,15 +112,15 @@ async function updateDateById(id) {
   }
 }
 
-
-function createGroupStats(registered, pending, attended) {
+// Función para crear el elemento de estadísticas
+// y agregarlo al contenedor
+function createGroupStats(registered, pending) {
   const nav = document.createElement('nav');
   nav.className = "level";
 
   const stats = [
     { heading: 'Grupos Registrados', title: registered },
     { heading: 'Grupos Pendientes', title: pending },
-    { heading: 'Grupos Atendidos', title: attended },
   ];
 
   stats.forEach(stat => {
@@ -112,7 +151,7 @@ function createGroupStats(registered, pending, attended) {
   }
 }
 
-
+// Función para crear un mensaje
 function createMessage(id, title, body, comments) {
   const article = document.createElement('article');
   article.className = "message is-info"; // Cambiar a "is-dark" si prefieres
@@ -156,7 +195,10 @@ async function deleteFirstMessage() {
     messageContainer.removeChild(firstMessage);
 
     console.log("Primer mensaje eliminado y fecha actualizada.");
-    window.location.reload();
+    
+    // Recargar las ventanas sin recargar toda la página
+    reloadStatsContainer();
+    reloadMessagesContainer();
   } else {
     console.log("No hay mensajes para eliminar.");
   }
@@ -175,9 +217,11 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
   }
 
-  const data = await getCounts();
   const messages = await getGroups(); // Esperar a que se obtengan los mensajes
-  createGroupStats(data.TotalRecords, data.PendingRecords, data.AttempRecords); // Puedes cambiar estos números según los datos reales
+
+  // Cargar estadísticas
+  var stats = await getCount();
+  createGroupStats(stats.TotalOptions, stats.OpenRequests); // Puedes cambiar estos números según los datos reales
 
   console.log(messages); // Para verificar que se obtienen los mensajes
 

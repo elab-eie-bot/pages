@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Listado de Asistencia</title>
+
+  <!-- Enlace a Bulma para el estilo -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+  
+  <!-- Hoja de estilos adicional -->
+  <link rel="stylesheet" href="cs/profesores.css">
+
+  <!-- Meta charset duplicado eliminado -->
+  <script>
+    // Verificar si el usuario está autenticado antes de mostrar la página
+    function checkUserAuthentication() {
+      // URL de Google App Script
+      fetch('https://script.google.com/macros/s/AKfycbw_nagOuPI3Ivf-W3CyoK7YvmJ40oFR5Ghdxp-OCbQ3aXUHjynrdecathxvlag7LOOh/exec', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(status => {
+        if (!status.loggedIn || !status.authorized) {
+          window.location.href = 'login.html'; // Redirigir al login si no está autenticado
+        }
+      })
+      .catch(error => {
+        console.error('Error en la autenticación:', error);
+        window.location.href = 'login.html'; // En caso de error, redirigir al login
+      });
+    }
+
+    // Llamar a la verificación al cargar la página
+    //document.addEventListener('DOMContentLoaded', checkUserAuthentication);
+  </script>
+</head>
+
+<body>
+
+  <!-- Contenedor para el indicador de carga -->
+  <div id="loading" class="loading">Cargando...</div>
+
+  <!-- Contenedor para las estadísticas -->
+  <div id="stats-container"></div>
+
+  <!-- Botón para eliminar grupo -->
+  <button id="delete-group-button" class="button is-danger is-fullwidth">Eliminar Grupo</button>
+
+  <!-- Contenedor para los mensajes -->
+  <div class="messages-container" id="messages-container"></div>
+
+  <script src="js/methods.js"></script>
+</body>
+
+</html>

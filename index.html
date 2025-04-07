@@ -12,143 +12,26 @@
 <body>
   <section class="section">
     <div class="container">
-      <h1 class="title">Solicitar Asistencia</h1>
-      <form id="form" class="box" method="POST">
-        <div class="field">
-          <label class="label">Número de mesa</label>
-          <div class="control">
-            <input
-              class="input"
-              type="text"
-              id="mesa"
-              placeholder="Escriba su número de mesa"
-              name="Numero de mesa"
-              required
-              oninput="validateNumber(event)"
-            />
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Ayuda o Revisión</label>
-          <div class="control">
-            <label class="radio">
-              <input type="radio" name="Ayuda o revision" value="Ayuda" required />
-              Ayuda
-            </label>
-            <label class="radio">
-              <input type="radio" name="Ayuda o revision" value="Revisión" required />
-              Revisión
-            </label>
-          </div>
-        </div>
-
-        <div class="field">
-          <label class="label">Detalles</label>
-          <div class="control">
-            <textarea class="textarea" placeholder="Información adicional que necesite saber el profesor" name="Notas"></textarea>
-          </div>
-        </div>
-
-        <div class="field is-grouped">
-          <div class="control">
-            <button class="button is-primary" type="submit" id="submit-button">
-              Enviar
-            </button>
-          </div>
-          <div class="control">
-            <button class="button is-danger" type="reset">Cancelar</button>
-          </div>
-        </div>
-      </form>
-
-      <div
-          id="message"
-          style="
-            display: none;
-            margin: 20px;
-            font-weight: bold;
-            color: green;
-            padding: 8px;
-            background-color: beige;
-            border-radius: 4px;
-            border-color: aquamarine;
-          "
-        ></div>
+        <h1 class="title">Sistema de Asistencia</h1>
+            <h2 class="subtitle">Laboratorio de Electrónica (eLab)</h2>
+        <button class="redirect-btn" type="submit" id="redirect-student-button">
+            Estudiante
+        </button>
+        <button class="redirect-btn" type="submit" id="redirect-professor-button">
+            Profesor
+        </button>
     </div>
   </section>
 
   <script>
-    // Función para validar que solo se ingresen números
-    function validateNumber(event) {
-      var input = event.target;
-      // Reemplaza cualquier valor que no sea un número o un espacio
-      input.value = input.value.replace(/[^0-9]/g, '');
-    }
+    document.getElementById("redirect-student-button").addEventListener("click", function() {
+    window.location.href = "estudiantes.html";});
 
-    // Función para manejar el envío del formulario
-      document.getElementById("form").addEventListener("submit", function (event) {
-      event.preventDefault(); // Evitar el comportamiento por defecto del formulario
-      document.getElementById("message").textContent = "Enviando...";
-      document.getElementById("message").style.display = "block";
-      document.getElementById("submit-button").disabled = true;
-      // Obtener los valores del formulario
-      var mesa = document.getElementById('mesa').value;
+    document.getElementById("redirect-professor-button").addEventListener("click", function() {
+        window.location.href = "login.html";});
 
-      // Añadir la palabra "Mesa" al valor del campo "Número de mesa"
-      mesa = 'Mesa ' + mesa;  // Aquí agregamos "Mesa " al inicio
-
-      var ayudaRevisión = document.querySelector('input[name="Ayuda o revision"]:checked').value;
-      var detalles = document.querySelector('textarea[name="Notas"]').value;
-
-      // Crear un objeto con los datos del formulario
-      var formData = new FormData();
-      formData.append("Numero de mesa", mesa);  // Ahora "Mesa X"
-      formData.append("Ayuda o revision", ayudaRevisión);
-      formData.append("Notas", detalles);
-
-      // Enviar los datos al Google Apps Script (Web App)
-      fetch('https://script.google.com/macros/s/AKfycbzMphGWuUXr7U4_SwOEEubA2O-vErz1vDzl5BODxGLLeSCAbUWqV45_7Dk5Qvjzyay3QA/exec', { 
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.text())
-      .then(data => {
-        document.getElementById("message").textContent =
-              "Datos enviados correctamente!";
-            document.getElementById("message").style.display = "block";
-            document.getElementById("message").style.backgroundColor = "green";
-            document.getElementById("message").style.color = "white";
-            document.getElementById("submit-button").disabled = false;
-            document.getElementById("form").reset();
-
-            setTimeout(function () {
-              document.getElementById("message").style.display = "none";
-            }, 3000);
-      })
-      .catch(error => {
-        // Mostrar el modal de error
-        // Mensaje de error
-        console.error(error);
-        document.getElementById("message").textContent =
-          "Ocurrió un error al enviar el formulario.";
-        document.getElementById("message").style.display = "block";
-        document.getElementById("message").style.backgroundColor = "red";
-        document.getElementById("message").style.color = "white";
-        document.getElementById("submit-button").disabled = false;
-      });
-    });
-
-    // Cerrar el modal de éxito
-    document.getElementById("closeSuccessModal").addEventListener("click", function () {
-      document.getElementById("successModal").classList.remove('is-active');
-    });
-
-    // Cerrar el modal de error
-    document.getElementById("closeErrorModal").addEventListener("click", function () {
-      document.getElementById("errorModal").classList.remove('is-active');
-    });
   </script>
 
 </body>
+
 </html>

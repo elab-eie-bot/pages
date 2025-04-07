@@ -1,12 +1,17 @@
-.section {
-    background-color: #f5f5f5;
-  }
-  .container {
-    color: #333333;
-  }
-  .title {
-    color: #33cc33;
-  }
-  #form {
-    background-color: #e0e0e0;
-  }
+.container button {
+  width: 50%;
+  height: 40px;
+  display: block;
+  margin: auto; /* Centra los botones */
+  text-align: center;
+  font-size: 1em;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  background-color: #e0e0e0;
+  border-style: none;
+}
+
+/* Agrega margen solo al primer botón */
+.container button:first-of-type {
+  margin-top: 150px;
+}

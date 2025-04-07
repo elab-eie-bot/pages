@@ -28,7 +28,6 @@
   100% { transform: rotate(360deg); }
 }
 
-
 .messages-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -37,7 +36,9 @@
   }
 
   #stats-container {
-    margin: 20px;
+    margin: 0 auto;
+    width: 90%;
+    margin-top: 40px;
     padding: 20px;
     border-radius: 8px;
     background-color: #2c3e50; /* Color de fondo oscuro */
@@ -75,10 +76,15 @@ body {
   .messages-container {
     flex-grow: 0; /* Evita que el contenedor de mensajes se extienda */
     margin-bottom: auto; /* Empuja el botón hacia el fondo */
+    display: block; /* Cambia a bloque para ocupar el ancho completo */
+    width: 90%;
+    margin: 0 auto; /* Centrar el contenedor */
   }
 
   #delete-group-button {
     margin: 20px auto; /* Centrar el botón */
+    margin-top: 70px; /* Espacio superior */
+    margin-bottom: 70px; /* Espacio inferior */
     width: 200px; /* Establece un ancho específico para el botón */
   }
 

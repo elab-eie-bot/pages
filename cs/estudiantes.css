@@ -1,0 +1,31 @@
+.section {
+    background-color: #f5f5f5;
+  }
+  .field {
+    position: relative;
+  }
+  .container {
+    color: #333333;
+    position: relative;
+    overflow: visible;
+  }
+  .title {
+    color: #005da4;
+  }
+  #form {
+    background-color: #e0e0e0;
+  }
+  .dropdown {
+    position: relative;
+    width: 100%;;
+  }
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 9999;
+    display: none;
+  }
+  .dropdown-menu.is-active {
+    display: block;
+  }
