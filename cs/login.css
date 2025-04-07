@@ -1,0 +1,15 @@
+.title {
+    color: #005da4; /* Modifica el color */
+}
+
+.button is-text {
+    margin-top: 20px; /* Agrega un margen bajo el botón de iniciar sesión */
+}
+
+.login-form {
+    margin-top: 5%; /* Agrega un margen arriba de los cuadros de entrada */
+}
+
+.control#log-in {
+    margin-top: 4%; /* Agrega un margen arriba del botón de login */
+}

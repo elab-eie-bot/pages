@@ -81,6 +81,10 @@ body {
     margin: 0 auto; /* Centrar el contenedor */
   }
 
+  .messages-container:last-of-type {
+    margin-bottom: 40px;
+  }
+
   #delete-group-button {
     margin: 20px auto; /* Centrar el botón */
     margin-top: 70px; /* Espacio superior */

@@ -6,15 +6,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solicitud de Asistencia</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
-  <link rel="stylesheet" href="cs/index.css">
+  <link rel="stylesheet" href="cs/login.css">
 </head>
 
 <body>
   <section class="section">
     <div class="container">
       <h1 class="title">Iniciar sesión</h1>
-      <button class="button is-ghost" type="submit" id="redirect-student-button">Ingresar como estudiante</button>
-      <form id="loginForm" onsubmit="submitForm(event)">
+      <button class="button is-text" type="submit" id="redirect-student-button">Ingresar como estudiante</button>
+      <form class ="login-form" id="login-form" onsubmit="submitForm(event)">
         <div class="field">
           <label class="label">Correo electrónico</label>
           <div class="control">
@@ -29,8 +29,8 @@
           </div>
         </div>
 
-        <div class="control">
-          <button class="button is-link" type="submit">Iniciar sesión</button>
+        <div class="control" id="log-in">
+          <button class="button is-dark" type="submit">Iniciar sesión</button>
         </div>
       </form>
 
