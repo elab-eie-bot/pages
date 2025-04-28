@@ -2,7 +2,6 @@
  * Este archivo incluye los métodos que utiliza la página de profesores para actualizarse correctamente.
  * 
  * @file profesores.js
- * @version 1.1
  */
 
 /**
