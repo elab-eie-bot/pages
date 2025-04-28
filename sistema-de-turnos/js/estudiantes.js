@@ -9,8 +9,9 @@
  * 
  * @function loadDropdownOptions
  * @returns {void}
+ * @throws {error} Si hay un error al obtener los datos de Google Sheets.
  */
-function loadDropdownOptions() {
+  function loadDropdownOptions() {
     // Obtener los datos de Google Sheets a través de Google Apps Script
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwelWA-J3V2vvNPoQyY4_M_ID2pMzJfBvSQm_NgvWWbgk13wQ7R96RxzENKoLi-5r3C/exec';
     fetch(scriptURL)
@@ -22,7 +23,13 @@ function loadDropdownOptions() {
       .catch(error => console.error("Error fetching dropdown data:", error));
   }
   
-  // Generar el menú desplegable con las opciones de mesa
+/**
+ * Obtener las mesas disponibles desde el json y generar el menú desplegable.
+ * 
+ * @function getTables
+ * @param {*} jsonData Información de las mesas obtenida desde Google Sheets.
+ * @returns {void}
+ */
   function getTables(jsonData) {
     let options = "";
     for (let mesa in jsonData) {
@@ -35,8 +42,13 @@ function loadDropdownOptions() {
     // Add click event listener to each dropdown item
     addDropdownItemListeners();
   }
-  
-  // Añadir event listeners a los elementos del menú desplegable
+
+/**
+ * Añadir event listeners a los elementos del menú desplegable.
+ * 
+ * @function addDropdownItemListeners
+ * @returns {void}
+ */
   function addDropdownItemListeners() {
     const dropdownItems = document.querySelectorAll(".dropdown-item");
   
@@ -47,21 +59,38 @@ function loadDropdownOptions() {
       });
     });
   }
-  
-  // Manejar la selección de la mesa
+
+/**
+ * Manejar la selección de la mesa y el envío del formulario.
+ * 
+ * @function selectTable
+ * @param {HTMLElement} item Elemento del menú desplegable que fue seleccionado.
+ * @returns {void}
+ */
   function selectTable(item) {
     const selectedTable = item.textContent.trim();
     document.querySelector(".dropdown-trigger button span").textContent = selectedTable;
     document.getElementById("dropdown-menu3").classList.remove("is-active");
   }
-  
-  // Abrir el menú desplegable y cargar las opciones
+
+/**
+ * Abrir el menú desplegable y cargar las opciones.
+ * 
+ * @function openDropdown
+ * @returns {void}
+ */
   function openDropdown() {
     document.getElementById("dropdown-menu3").classList.toggle("is-active");
     loadDropdownOptions(); // Recargar las opciones al abrir el menú
   }
-  
-  // Manejar el envío de formulario
+
+/**
+ * Manejar el envío del formulario y la validación de datos. 
+ * 
+ * @function handleFormSubmission
+ * @param {Event} event Evento de envío del formulario.
+ * @returns {void}
+ */
   function handleFormSubmission(event) {
     event.preventDefault(); // Prevenir el comportamiento por defecto del formulario
     
@@ -97,7 +126,16 @@ function loadDropdownOptions() {
     submitFormData(formData, messageElement, submitButton, form);
   }
   
-  // Enviar el formulario a Google Apps Script
+/**
+ * Enviar los datos del formulario a Google Apps Script.
+ * 
+ * @param {*} formData Datos del formulario a enviar.
+ * @param {*} messageElement Elemento para mostrar mensajes al profesor.
+ * @param {*} submitButton Elemento del botón de envío.
+ * @param {*} form Formulario.
+ * @returns {void}
+ * @throws {error} Si hay un error al enviar los datos.
+ */
   function submitFormData(formData, messageElement, submitButton, form) {
     // Cargar el script de Google Apps Script
     fetch('https://script.google.com/macros/s/AKfycbyFBRuxbXbuOJnsIdTGgX9vhFzdIDQaldkcspRFBDyur9jCbunAHXssne3tzxJJA3xz2A/exec', { 
