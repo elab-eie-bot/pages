@@ -36,4 +36,4 @@ Después de crear una solicitud, el profesor verá las solicitudes de todas las 
 
 ## Documentación para desarrolladores
 
-Puede acceder a la documentación para desarrolladores en el siguiente enlace: [Documentación para Desarrolladores]().
+Puede acceder a la documentación para desarrolladores en el siguiente enlace: [Documentación para Desarrolladores](https://elab-eie-bot.github.io/pages/sistema-de-turnos/docs/index.html).
