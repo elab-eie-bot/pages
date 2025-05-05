@@ -52,8 +52,8 @@ async function reloadMessagesContainer() {
 }
 
 // Configurar intervalos para recargar los contenedores periódicamente
-setInterval(reloadStatsContainer, 10000); // Recargar cada 10 segundos
-setInterval(reloadMessagesContainer, 10000); // Recargar cada 10 segundos
+setInterval(reloadStatsContainer, 5000); // Recargar cada 10 segundos
+setInterval(reloadMessagesContainer, 5000); // Recargar cada 10 segundos
 
 /** 
  * Obtener las solicitudes actuales de Google Sheets
