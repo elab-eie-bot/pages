@@ -158,13 +158,12 @@ async function updateDateById(id) {
  * @returns {void}
  * @throws {error} Si hay un error al crear el elemento de estadísticas.
  */
-function createGroupStats(registered, pending) {
+function createGroupStats(pending) {
   const nav = document.createElement('nav');
   nav.className = "level";
 
   // Crear los elementos de estadísticas
   const stats = [
-    { heading: 'Grupos Registrados', title: registered },
     { heading: 'Grupos Pendientes', title: pending },
   ];
 
