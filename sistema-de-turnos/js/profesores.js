@@ -153,7 +153,6 @@ async function updateDateById(id) {
  * Crear elemento de estadísticas y agregarlas al contenedor
  * 
  * @function createGroupStats
- * @param {*} registered Cantidad de grupos registrados, determinada por la cantidad de mesas disponibles en el laboratorio
  * @param {*} pending Cantidad de grupos pendientes, determinada por la cantidad de mesas con solicitudes abiertas
  * @returns {void}
  * @throws {error} Si hay un error al crear el elemento de estadísticas.
