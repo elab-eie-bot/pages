@@ -171,4 +171,9 @@
   
   // Establecer el evento de clic para abrir el menú desplegable
   document.getElementById("form").addEventListener("submit", handleFormSubmission);
+
+  // Cargar el contenido del dropdown cuando se carga la página
+  document.addEventListener('DOMContentLoaded', function () {
+    loadDropdownOptions();
+  });
   

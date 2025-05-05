@@ -52,8 +52,8 @@ async function reloadMessagesContainer() {
 }
 
 // Configurar intervalos para recargar los contenedores periódicamente
-setInterval(reloadStatsContainer, 10000); // Recargar cada 10 segundos
-setInterval(reloadMessagesContainer, 10000); // Recargar cada 10 segundos
+setInterval(reloadStatsContainer, 5000); // Recargar cada 10 segundos
+setInterval(reloadMessagesContainer, 5000); // Recargar cada 10 segundos
 
 /** 
  * Obtener las solicitudes actuales de Google Sheets
@@ -153,18 +153,16 @@ async function updateDateById(id) {
  * Crear elemento de estadísticas y agregarlas al contenedor
  * 
  * @function createGroupStats
- * @param {*} registered Cantidad de grupos registrados, determinada por la cantidad de mesas disponibles en el laboratorio
  * @param {*} pending Cantidad de grupos pendientes, determinada por la cantidad de mesas con solicitudes abiertas
  * @returns {void}
  * @throws {error} Si hay un error al crear el elemento de estadísticas.
  */
-function createGroupStats(registered, pending) {
+function createGroupStats(pending) {
   const nav = document.createElement('nav');
   nav.className = "level";
 
   // Crear los elementos de estadísticas
   const stats = [
-    { heading: 'Grupos Registrados', title: registered },
     { heading: 'Grupos Pendientes', title: pending },
   ];
 
