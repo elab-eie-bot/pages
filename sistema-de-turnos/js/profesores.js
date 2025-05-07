@@ -157,7 +157,7 @@ async function updateDateById(id) {
  * @returns {void}
  * @throws {error} Si hay un error al crear el elemento de estadísticas.
  */
-function createGroupStats(pending) {
+function createGroupStats(registered, pending) {
   const nav = document.createElement('nav');
   nav.className = "level";
 
@@ -314,3 +314,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   const deleteButton = document.getElementById('delete-group-button');
   deleteButton.addEventListener('click', deleteFirstMessage);
 });
+
+  function toggleSoundIcon() {
+    const icon = document.getElementById("sound-icon");
+    const isVolume = icon.src.includes("volume.png");
+
+    icon.src = isVolume ? "imgs/mute.png" : "imgs/volume.png";
+  };
