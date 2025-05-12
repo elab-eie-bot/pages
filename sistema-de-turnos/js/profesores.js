@@ -125,6 +125,12 @@ async function getCount() {
   }
 }
 
+/**
+ * @function deleteRowById
+ * @param {*} id Número de fila que se quiere eliminar de Google Sheets -1
+ * @returns {void}
+ * @throws {error} Si hay un error al eliminar la fila
+ */
 async function deleteRowById(id) {
   try {
     console.log("Eliminar fila con ID: ", id); // Verifica el valor del ID
