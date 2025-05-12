@@ -330,9 +330,6 @@ async function checkNewRequests() {
 
 function toggleSoundIcon() {
   const icon = document.getElementById("sound-icon");
-  const isVolume = icon.src.includes("mute.png");
-
-  icon.src = isVolume ? "imgs/volume.png" : "imgs/mute.png";
 
   if(soundEnabled) {
     soundEnabled = false;
