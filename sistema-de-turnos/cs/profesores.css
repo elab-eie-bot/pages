@@ -37,8 +37,8 @@
 
   #stats-container {
     margin: 0 auto;
-    width: 90%;
-    margin-top: 10px;
+    width: 100%;
+    margin-top: 20px;
     padding: 20px;
     border-radius: 8px;
     background-color: #2c3e50; /* Color de fondo oscuro */
@@ -73,12 +73,27 @@ body {
     min-height: 100vh; /* Asegura que el body ocupe al menos la altura completa del viewport */
   }
 
+  .main-container {
+    display: flex;
+    align-items: flex-start; /* Opcional: alinea verticalmente arriba */
+    gap: 20px; /* Espacio entre secciones */
+  }
+  
+  .left-section {
+    display: flex;
+    flex-direction: column; /* Poner stats y botón uno debajo del otro */
+    gap: 10px; /* Espacio entre stats y botón */
+    margin-left: 40px;
+    width: 70%;
+  }
+
+  .right-section {
+    width: 30%;
+  }
+
   .messages-container {
     flex-grow: 0; /* Evita que el contenedor de mensajes se extienda */
-    margin-bottom: auto; /* Empuja el botón hacia el fondo */
     display: block; /* Cambia a bloque para ocupar el ancho completo */
-    width: 90%;
-    margin: 0 auto; /* Centrar el contenedor */
   }
 
   .messages-container:last-of-type {
@@ -86,15 +101,15 @@ body {
   }
 
   #delete-group-button {
-    margin: 20px auto; /* Centrar el botón */
-    margin-top: 70px; /* Espacio superior */
+    margin: auto; /* Centrar el botón */
+    margin-top: 20px; /* Espacio superior */
     margin-bottom: 70px; /* Espacio inferior */
     width: 200px; /* Establece un ancho específico para el botón */
   }
 
   #sound-button {
     margin-left: auto; /* Alinear a la derecha */
-    margin-right: 5%; /* Espacio del lado derecho */
+    margin-right: 20px; /* Espacio del lado derecho */
     margin-top: 20px; /* Espacio superior */
     margin-bottom: 10px;
     width: 50px; /* Establece un ancho específico para el botón */
