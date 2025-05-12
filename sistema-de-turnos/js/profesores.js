@@ -77,7 +77,7 @@ async function getGroups() {
 
     // Crear la constante messages
     const messages = data.map(row => ({
-      id: row[1],
+      id: row[0],
       title: row[2], // Columna B
       body: row[3],   // Columna C
       comments: row[4]
@@ -125,29 +125,36 @@ async function getCount() {
   }
 }
 
-async function updateDateById(id) {
+/**
+ * @function deleteRowById
+ * @param {*} id Número de fila que se quiere eliminar de Google Sheets -1
+ * @returns {void}
+ * @throws {error} Si hay un error al eliminar la fila
+ */
+async function deleteRowById(id) {
   try {
-    console.log("Update group: ", id);
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbwDjWQxfxUyX1PbTV3VcyhiTkzMCQXhyqfm9H4em3SJKVOAdMpoWgN2nY7dFVDWg2NE/exec';
-    const formDataString = `id=${encodeURIComponent(id)}`;
+    console.log("Eliminar fila con ID: ", id); // Verifica el valor del ID
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbxErtRwNLn41PeN3_GOMtnu4kVAxygi5TJ9MxL_h0M02OUGviPAsIHTPbABb_LU042x/exec';
+    const formDataString = `id=${encodeURIComponent(id)}`; // Enviar ID como parámetro
     const response = await fetch(scriptUrl, {
       method: 'POST',
       headers: {
-        "Content-Type": "text/plain;charset=utf-8"
+        "Content-Type": "application/x-www-form-urlencoded" // Enviar como formulario URL codificado
       },
-      body: formDataString
+      body: formDataString // Enviar el ID
     });
 
     if (!response.ok) {
-      throw new Error("Error en la solicitud de actualización");
+      throw new Error("Error en la solicitud de eliminación");
     }
 
-    const result = await response.json();
+    const result = await response.text(); // Obtener respuesta como texto
     console.log(result); // Verifica la respuesta del servidor
   } catch (error) {
-    console.error("Error al actualizar la fecha:", error);
+    console.error("Error al eliminar la fila:", error);
   }
 }
+
 
 /**
  * Crear elemento de estadísticas y agregarlas al contenedor
@@ -220,6 +227,18 @@ function createMessage(id, title, body, comments) {
   const header = document.createElement('div');
   header.className = "message-header"; // Agregar la clase "message-header"
   header.innerHTML = `<p>${title}</p>`; // Solo muestra el título
+
+  // Crear botón para eliminar mensaje
+  const btnDelete = document.createElement('button');
+  btnDelete.className = 'delete';
+  btnDelete.onclick = async () => {
+    await deleteRowById(id + 1);      // Espera que se complete
+    reloadMessagesContainer();        // Luego recarga mensajes
+    reloadStatsContainer();           // Y las estadísticas
+    console.log("Mensaje eliminado");
+  };
+
+  header.appendChild(btnDelete); // Unir botón de eliminación al header
   
   // Crear el cuerpo del mensaje
   const bodyDiv = document.createElement('div');
@@ -238,38 +257,6 @@ function createMessage(id, title, body, comments) {
 
   // Agregar el artículo al contenedor de mensajes
   document.getElementById('messages-container').appendChild(article);
-}
-
-/**
- * Eliminar el primer mensaje en Google Sheets
- * 
- * @function deleteFirstMessage
- * @returns {void}
- * @throws {error} Si hay un error al eliminar el mensaje o al actualizar la fecha.
- */
-async function deleteFirstMessage() {
-  const messageContainer = document.getElementById('messages-container'); // Obtener el contenedor de mensajes
-  const firstMessage = messageContainer.querySelector('article'); // Seleccionar el primer mensaje
-
-  // Verificar que no esté vacío el contenedor
-  if (firstMessage) {
-    // Obtener el ID del primer mensaje (está en un párrafo oculto)
-    const messageId = firstMessage.querySelector('#message-id').textContent;
-
-    // Enviar la solicitud de actualización a Google Apps Script
-    await updateDateById(messageId); // Llamar a la función para actualizar la fecha en Google Sheets
-
-    // Eliminar el primer mensaje
-    messageContainer.removeChild(firstMessage);
-
-    console.log("Primer mensaje eliminado y fecha actualizada."); // Mensaje de éxito
-    
-    // Recargar las ventanas sin recargar toda la página
-    reloadStatsContainer();
-    reloadMessagesContainer();
-  } else {
-    console.log("No hay mensajes para eliminar.");
-  }
 }
 
 /**
@@ -312,7 +299,11 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   // Agregar evento al botón de eliminar
   const deleteButton = document.getElementById('delete-group-button');
-  deleteButton.addEventListener('click', deleteFirstMessage);
+  deleteButton.addEventListener('click', () => {
+    deleteRowById(2); // Enviar como string si el ID en la hoja es texto
+    reloadMessagesContainer();
+    reloadStatsContainer();
+  });
 });
 
   function toggleSoundIcon() {
