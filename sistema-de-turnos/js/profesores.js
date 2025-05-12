@@ -128,6 +128,7 @@ async function getCount() {
 }
 
 /**
+ * Función reutilizable que permite eliminar una solicitud específica
  * @function deleteRowById
  * @param {*} id Número de fila que se quiere eliminar de Google Sheets -1
  * @returns {void}
@@ -160,7 +161,6 @@ async function deleteRowById(id) {
 
 /**
  * Crear elemento de estadísticas y agregarlas al contenedor
- * 
  * @function createGroupStats
  * @param {*} pending Cantidad de grupos pendientes, determinada por la cantidad de mesas con solicitudes abiertas
  * @returns {void}
@@ -211,7 +211,6 @@ function createGroupStats(registered, pending) {
 
 /**
  * Crear un mensaje y agregarlo al contenedor de mensajes
- * 
  * @function createMessage
  * @param {*} id ID del mensaje
  * @param {*} title Título del mensaje
@@ -263,7 +262,6 @@ function createMessage(id, title, body, comments) {
 
 /**
  * Esperar a que el DOM esté completamente cargado antes de ejecutar el código
- * 
  * @function DOMContentLoaded
  * @returns {void}
  * @throws {error} Si hay un error al cargar el DOM o al obtener los mensajes.
@@ -307,7 +305,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     reloadStatsContainer();
   });
 });
+
 /**
+ * Revisar si hay solicitudes nuevas, comparando con las solicitudes anteriores e identificando si algún id no estaba presente
  * @function checkNewRequests
  * @returns {void}
  * @throws {error} Si se presenta un error al verificar si hay nuevas solicitudes
@@ -378,13 +378,16 @@ function toggleSoundIcon() {
  * @throws {error} Si el archivo de audio no se encuentra en la carpeta especificada
  */
 function playSoundAlert() {
+  // Cargar audio
   const audio = document.getElementById("alert-sound");
+  // Si el audio se cargó correctamente, reproducirlo
   if (audio) {
     audio.currentTime = 0; // Devolver al inicio
+    // Reproducir el audio, si se presenta un error de reproducción, alertarlo por medio de warning
     audio.play().catch(err => {
       console.warn("Error de reproducción de sonido:", err);
     });
-  } else {
+  } else { // Si no se encuentra el archivo de audio, notificar error
     console.error("Archivo de audio no encontrado!");
   }
 }
