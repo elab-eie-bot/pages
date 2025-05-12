@@ -52,8 +52,8 @@ async function reloadMessagesContainer() {
 }
 
 // Configurar intervalos para recargar los contenedores periódicamente
-setInterval(reloadStatsContainer, 50000); // Recargar cada 10 segundos
-setInterval(reloadMessagesContainer, 50000); // Recargar cada 10 segundos
+setInterval(reloadStatsContainer, 5000); // Recargar cada 10 segundos
+setInterval(reloadMessagesContainer, 5000); // Recargar cada 10 segundos
 
 /** 
  * Obtener las solicitudes actuales de Google Sheets
@@ -77,7 +77,7 @@ async function getGroups() {
 
     // Crear la constante messages
     const messages = data.map(row => ({
-      id: row[1],
+      id: row[0],
       title: row[2], // Columna B
       body: row[3],   // Columna C
       comments: row[4]
@@ -227,6 +227,18 @@ function createMessage(id, title, body, comments) {
   const header = document.createElement('div');
   header.className = "message-header"; // Agregar la clase "message-header"
   header.innerHTML = `<p>${title}</p>`; // Solo muestra el título
+
+  // Crear botón para eliminar mensaje
+  const btnDelete = document.createElement('button');
+  btnDelete.className = 'delete';
+  btnDelete.onclick = async () => {
+    await deleteRowById(id + 1);      // Espera que se complete
+    reloadMessagesContainer();        // Luego recarga mensajes
+    reloadStatsContainer();           // Y las estadísticas
+    console.log("Mensaje eliminado");
+  };
+
+  header.appendChild(btnDelete); // Unir botón de eliminación al header
   
   // Crear el cuerpo del mensaje
   const bodyDiv = document.createElement('div');
