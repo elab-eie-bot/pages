@@ -49,6 +49,8 @@ async function reloadMessagesContainer() {
   } catch (error) {
     console.error("Error al recargar el contenedor de mensajes:", error);
   }
+
+  checkNewRequests();
 }
 
 // Configurar intervalos para recargar los contenedores periódicamente
@@ -306,9 +308,58 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 });
 
-  function toggleSoundIcon() {
-    const icon = document.getElementById("sound-icon");
-    const isVolume = icon.src.includes("volume.png");
+async function checkNewRequests() {
+  try {
+    const currentMessages = await getGroups();
+    const currentIds = currentMessages.map(msg => msg.id);
 
-    icon.src = isVolume ? "imgs/mute.png" : "imgs/volume.png";
-  };
+    const newMessages = currentIds.filter(id => !previousRequestIds.includes(id));
+
+    if (newMessages.length > 0) {
+      console.log("¡Nuevas solicitudes detectadas!", newMessages);
+      if (soundEnabled) {
+        playSoundAlert();
+      }
+    }
+
+    previousRequestIds = currentIds; // Actualizar la lista para la próxima comparación
+  } catch (error) {
+    console.error("Error al verificar nuevas solicitudes:", error);
+  }
+}
+
+function toggleSoundIcon() {
+  const icon = document.getElementById("sound-icon");
+  const isVolume = icon.src.includes("mute.png");
+
+  icon.src = isVolume ? "imgs/volume.png" : "imgs/mute.png";
+
+  if(soundEnabled) {
+    soundEnabled = false;
+    icon.src = "imgs/mute.png";
+    console.log("Sonido desactivado");
+  } else {
+    const userConfirmation = confirm("¿Quieres habilitar los sonidos de notificación?");
+    if (userConfirmation) {
+      soundEnabled = true;
+      icon.src = "imgs/volume.png"
+      console.log("Sonido activado");
+    } else {
+      soundEnabled = false;
+      console.log("El usuario no activó el sonido");
+    }
+  }
+  
+};
+
+function playSoundAlert() {
+  const audio = document.getElementById("alert-sound");
+  if (audio) {
+    audio.currentTime = 0; // Devolver al inicio
+    audio.play().catch(err => {
+      console.warn("Error de reproducción de sonido:", err);
+    });
+  } else {
+    console.error("Archivo de audio no encontrado!");
+  }
+}
