@@ -307,16 +307,22 @@ document.addEventListener("DOMContentLoaded", async function () {
     reloadStatsContainer();
   });
 });
-
+/**
+ * @function checkNewRequests
+ * @returns {void}
+ * @throws {error} Si se presenta un error al verificar si hay nuevas solicitudes
+ */
 async function checkNewRequests() {
   try {
-    const currentMessages = await getGroups();
-    const currentIds = currentMessages.map(msg => msg.id);
+    const currentMessages = await getGroups(); // Obtener los mensajes actuales
+    const currentIds = currentMessages.map(msg => msg.id); // Mapear los ids actuales a una variable
 
+    // Comparar los ids actuales con los ids que se tenía anteriormente, si se encuentra alguno no mapeado anteriormente, se guarda el newMessages
     const newMessages = currentIds.filter(id => !previousRequestIds.includes(id));
 
-    if (newMessages.length > 0) {
-      console.log("¡Nuevas solicitudes detectadas!", newMessages);
+    // Si el tamaño de los mensajes nuevos y de los requests anteriores es mayor a 0, activar alerta de sonido
+    if (newMessages.length > 0 && previousRequestIds > 0) {
+      console.log("Nuevas solicitudes detectadas", newMessages);
       if (soundEnabled) {
         playSoundAlert();
       }
@@ -328,27 +334,49 @@ async function checkNewRequests() {
   }
 }
 
+
+/**
+ * Activar o desactivar sonido y cambiar el ícono de sonido
+ * 
+ * @function toggleSoundIcon
+ * @returns {void}
+ */
 function toggleSoundIcon() {
+  // Cargar ícono de los elementos del html
   const icon = document.getElementById("sound-icon");
 
+  // Si el sonido está actualmente habilitado, cuando se presiona este botón, se quiere desactivar
   if(soundEnabled) {
-    soundEnabled = false;
-    icon.src = "imgs/mute.png";
+    soundEnabled = false; // Deshabilitar sonido
+    icon.src = "imgs/mute.png"; // Cambiar ícono al de mute
+    // Loggear actividad en la terminal
     console.log("Sonido desactivado");
   } else {
+    // Solicitar confirmación para habilitar sonidos de notificación
     const userConfirmation = confirm("¿Quieres habilitar los sonidos de notificación?");
+    // Si confirma correctamente, habilitar sonido
     if (userConfirmation) {
-      soundEnabled = true;
-      icon.src = "imgs/volume.png"
+      soundEnabled = true; // Habilitar sonido
+      icon.src = "imgs/volume.png" // Cambiar ícono al de volume
+      // Loggear actividad en la terminal
       console.log("Sonido activado");
-    } else {
-      soundEnabled = false;
+    } else { // Si no se confirma, o se niega permiso, deshabilitar sonido
+      soundEnabled = false; // Deshabilitar sonido
+      // Loggear actividad en la terminal
       console.log("El usuario no activó el sonido");
     }
   }
   
 };
 
+/**
+ * Reproduce un audio de notificación cuando el audio se encuentra habilitado
+ * 
+ * @function playSoundAlert
+ * @returns {void}
+ * @throws {warn} Si se presenta un error de reproducción de sonido
+ * @throws {error} Si el archivo de audio no se encuentra en la carpeta especificada
+ */
 function playSoundAlert() {
   const audio = document.getElementById("alert-sound");
   if (audio) {
