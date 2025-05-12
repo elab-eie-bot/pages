@@ -49,6 +49,8 @@ async function reloadMessagesContainer() {
   } catch (error) {
     console.error("Error al recargar el contenedor de mensajes:", error);
   }
+
+  checkNewRequests();
 }
 
 // Configurar intervalos para recargar los contenedores periódicamente
@@ -126,6 +128,7 @@ async function getCount() {
 }
 
 /**
+ * Función reutilizable que permite eliminar una solicitud específica
  * @function deleteRowById
  * @param {*} id Número de fila que se quiere eliminar de Google Sheets -1
  * @returns {void}
@@ -158,7 +161,6 @@ async function deleteRowById(id) {
 
 /**
  * Crear elemento de estadísticas y agregarlas al contenedor
- * 
  * @function createGroupStats
  * @param {*} pending Cantidad de grupos pendientes, determinada por la cantidad de mesas con solicitudes abiertas
  * @returns {void}
@@ -209,7 +211,6 @@ function createGroupStats(registered, pending) {
 
 /**
  * Crear un mensaje y agregarlo al contenedor de mensajes
- * 
  * @function createMessage
  * @param {*} id ID del mensaje
  * @param {*} title Título del mensaje
@@ -261,7 +262,6 @@ function createMessage(id, title, body, comments) {
 
 /**
  * Esperar a que el DOM esté completamente cargado antes de ejecutar el código
- * 
  * @function DOMContentLoaded
  * @returns {void}
  * @throws {error} Si hay un error al cargar el DOM o al obtener los mensajes.
@@ -306,9 +306,88 @@ document.addEventListener("DOMContentLoaded", async function () {
   });
 });
 
-  function toggleSoundIcon() {
-    const icon = document.getElementById("sound-icon");
-    const isVolume = icon.src.includes("volume.png");
+/**
+ * Revisar si hay solicitudes nuevas, comparando con las solicitudes anteriores e identificando si algún id no estaba presente
+ * @function checkNewRequests
+ * @returns {void}
+ * @throws {error} Si se presenta un error al verificar si hay nuevas solicitudes
+ */
+async function checkNewRequests() {
+  try {
+    const currentMessages = await getGroups(); // Obtener los mensajes actuales
+    const currentIds = currentMessages.map(msg => msg.id); // Mapear los ids actuales a una variable
 
-    icon.src = isVolume ? "imgs/mute.png" : "imgs/volume.png";
-  };
+    // Comparar los ids actuales con los ids que se tenía anteriormente, si se encuentra alguno no mapeado anteriormente, se guarda el newMessages
+    const newMessages = currentIds.filter(id => !previousRequestIds.includes(id));
+
+    // Si el tamaño de los mensajes nuevos y de los requests anteriores es mayor a 0, activar alerta de sonido
+    if (newMessages.length > 0 && previousRequestIds > 0) {
+      console.log("Nuevas solicitudes detectadas", newMessages);
+      if (soundEnabled) {
+        playSoundAlert();
+      }
+    }
+
+    previousRequestIds = currentIds; // Actualizar la lista para la próxima comparación
+  } catch (error) {
+    console.error("Error al verificar nuevas solicitudes:", error);
+  }
+}
+
+
+/**
+ * Activar o desactivar sonido y cambiar el ícono de sonido
+ * 
+ * @function toggleSoundIcon
+ * @returns {void}
+ */
+function toggleSoundIcon() {
+  // Cargar ícono de los elementos del html
+  const icon = document.getElementById("sound-icon");
+
+  // Si el sonido está actualmente habilitado, cuando se presiona este botón, se quiere desactivar
+  if(soundEnabled) {
+    soundEnabled = false; // Deshabilitar sonido
+    icon.src = "imgs/mute.png"; // Cambiar ícono al de mute
+    // Loggear actividad en la terminal
+    console.log("Sonido desactivado");
+  } else {
+    // Solicitar confirmación para habilitar sonidos de notificación
+    const userConfirmation = confirm("¿Quieres habilitar los sonidos de notificación?");
+    // Si confirma correctamente, habilitar sonido
+    if (userConfirmation) {
+      soundEnabled = true; // Habilitar sonido
+      icon.src = "imgs/volume.png" // Cambiar ícono al de volume
+      // Loggear actividad en la terminal
+      console.log("Sonido activado");
+    } else { // Si no se confirma, o se niega permiso, deshabilitar sonido
+      soundEnabled = false; // Deshabilitar sonido
+      // Loggear actividad en la terminal
+      console.log("El usuario no activó el sonido");
+    }
+  }
+  
+};
+
+/**
+ * Reproduce un audio de notificación cuando el audio se encuentra habilitado
+ * 
+ * @function playSoundAlert
+ * @returns {void}
+ * @throws {warn} Si se presenta un error de reproducción de sonido
+ * @throws {error} Si el archivo de audio no se encuentra en la carpeta especificada
+ */
+function playSoundAlert() {
+  // Cargar audio
+  const audio = document.getElementById("alert-sound");
+  // Si el audio se cargó correctamente, reproducirlo
+  if (audio) {
+    audio.currentTime = 0; // Devolver al inicio
+    // Reproducir el audio, si se presenta un error de reproducción, alertarlo por medio de warning
+    audio.play().catch(err => {
+      console.warn("Error de reproducción de sonido:", err);
+    });
+  } else { // Si no se encuentra el archivo de audio, notificar error
+    console.error("Archivo de audio no encontrado!");
+  }
+}

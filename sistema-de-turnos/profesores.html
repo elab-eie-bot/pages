@@ -45,10 +45,12 @@
   <!-- Contenedor para el indicador de carga -->
   <div id="loading" class="loading">Cargando...</div>
 
-  <!--
+  
   <button id="sound-button" class="button is-primary is-fullwidth" onclick="toggleSoundIcon()">
-    <img id="sound-icon" src="imgs/volume.png" alt="Icon" style="width: 20px; height: 20px;">
-  </button>  -->
+    <img id="sound-icon" src="imgs/mute.png" alt="Icon" style="width: 20px; height: 20px;">
+  </button>
+
+  <audio id="alert-sound" src="sound/alert-sound.mp3" preload="auto"></audio>
 
   <!-- Contenedor para las estadísticas -->
   <div id="stats-container"></div>
@@ -62,6 +64,10 @@
   <a href="https://www.flaticon.com/free-icons/mute" title="mute icons">Mute icons created by Pixel perfect - Flaticon</a>
   <a href="https://www.flaticon.com/free-icons/speaker" title="speaker icons">Speaker icons created by Pixel perfect - Flaticon</a> -->
 
+  <script>
+    let soundEnabled = false;
+    let previousRequestIds = [];
+  </script>
   <script src="js/profesores.js"></script>
 </body>
 
