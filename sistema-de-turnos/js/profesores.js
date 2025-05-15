@@ -137,7 +137,7 @@ async function getCount() {
 async function deleteRowById(id) {
   try {
     console.log("Eliminar fila con ID: ", id); // Verifica el valor del ID
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbxErtRwNLn41PeN3_GOMtnu4kVAxygi5TJ9MxL_h0M02OUGviPAsIHTPbABb_LU042x/exec';
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbxSZTpRXCeZyguUoS2Aoj8Kfub6MNkoTmEGAW4q5EDokFvhnqJ2gaXs90osIPT9yl6J/exec';
     const formDataString = `id=${encodeURIComponent(id)}`; // Enviar ID como parámetro
     const response = await fetch(scriptUrl, {
       method: 'POST',
@@ -321,7 +321,7 @@ async function checkNewRequests() {
     const newMessages = currentIds.filter(id => !previousRequestIds.includes(id));
 
     // Si el tamaño de los mensajes nuevos y de los requests anteriores es mayor a 0, activar alerta de sonido
-    if (newMessages.length > 0 && previousRequestIds > 0) {
+    if (newMessages.length > 0) {
       console.log("Nuevas solicitudes detectadas", newMessages);
       if (soundEnabled) {
         playSoundAlert();
