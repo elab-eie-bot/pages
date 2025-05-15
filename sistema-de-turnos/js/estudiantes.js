@@ -138,24 +138,32 @@
  */
   function submitFormData(formData, messageElement, submitButton, form) {
     // Cargar el script de Google Apps Script
-    fetch('https://script.google.com/macros/s/AKfycbyFBRuxbXbuOJnsIdTGgX9vhFzdIDQaldkcspRFBDyur9jCbunAHXssne3tzxJJA3xz2A/exec', { 
+    fetch('https://script.google.com/macros/s/AKfycby2mGCmxxW6U1LTb66MlzKXZ0VewXT8xzX6q9Z8ibjbPvI53y2jQE1T3b8Q1VMlc9X19A/exec', { 
       method: 'POST',
       body: formData
     })
     .then(response => response.text())
     .then(data => {
-      // Indicar que el envío fue exitoso
-      showMessage(messageElement, "Datos enviados correctamente!", "green");
+      // Mostrar respuesta del servidor
+      console.log("Respuesta del servidor:", data);
+
+      // Cambiar el comportamiento dependiendo de la respuesta del servidor
+      if (data.startsWith("Error")) { // Error: ya existe el registro, se muestra en rojo
+        showMessage(messageElement, data, "red");
+      } else { // Registro agregado correctamente: se muestra en verde
+        showMessage(messageElement, data, "green");
+        form.reset();
+        document.querySelector(".dropdown-trigger button span").textContent = "Seleccionar mesa"; // Resetear dropdown
+      }
+
       submitButton.disabled = false;
-      form.reset();
-      document.querySelector(".dropdown-trigger button span").textContent = "Seleccionar mesa"; // Resetear dropdown
   
       setTimeout(() => {
         messageElement.style.display = "none";
-      }, 1000);
+      }, 2000);
     })
     .catch(error => {
-      console.error(error);
+      console.error("Error de red: ", error);
       showMessage(messageElement, "Ocurrió un error al enviar el formulario.", "red");
       submitButton.disabled = false;
     });
