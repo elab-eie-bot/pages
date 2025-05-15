@@ -283,7 +283,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // Cargar estadísticas
   var stats = await getCount();
-  createGroupStats(stats.TotalOptions, stats.OpenRequests); // Puedes cambiar estos números según los datos reales
+  createGroupStats(stats.TotalOptions, stats.OpenRequests);
 
   console.log(messages); // Para verificar que se obtienen los mensajes
 
@@ -299,8 +299,10 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   // Agregar evento al botón de eliminar
   const deleteButton = document.getElementById('delete-group-button');
-  deleteButton.addEventListener('click', () => {
-    deleteRowById(2); // Enviar como string si el ID en la hoja es texto
+  deleteButton.addEventListener('click', async () => {
+    // Eliminar todos los request desde la columna 2
+    await deleteAllRequests();
+    // Recargar contenedores y estadísticas
     reloadMessagesContainer();
     reloadStatsContainer();
   });
@@ -389,5 +391,35 @@ function playSoundAlert() {
     });
   } else { // Si no se encuentra el archivo de audio, notificar error
     console.error("Archivo de audio no encontrado!");
+  }
+}
+
+/**
+ * Función que elimina todas las solicitudes creadas
+ * 
+ * @function deleteAllRequests
+ * @returns {void}
+ * @throws {error} Si se presenta un error en la respuesta del servidor para eliminar todas las filas
+ */
+async function deleteAllRequests() {
+  try {
+    console.log("Eliminar todas las filas"); // Informar ejecución de la función
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbyljauBqx6ik7qT1v6gF15xkM9mwLQQdBUABF8cUTjzCMtS6iMfqTdPV4KOjNQGB-kpcQ/exec';
+    const response = await fetch(scriptUrl, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded" // Enviar como formulario URL codificado
+      },
+      body: new URLSearchParams({ deleteAll: 'true' }) // Enviar el ID
+    });
+
+    if (!response.ok) {
+      throw new Error("Error en la solicitud de eliminación");
+    }
+
+    const result = await response.text(); // Obtener respuesta como texto
+    console.log(result); // Verifica la respuesta del servidor
+  } catch (error) {
+    console.error("Error al eliminar la fila:", error);
   }
 }
