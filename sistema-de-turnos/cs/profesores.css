@@ -118,3 +118,33 @@ body {
   .button-container {
     text-align: center; /* Centrar el contenido */
   }
+
+/* Estilo de CSS para el sitio móvil */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .left-section,
+  .right-section {
+    width: 100%;
+    margin: 20px;
+  }
+
+  .left-section {
+    align-items: center;
+    width: 90%;
+  }
+
+  .right-section {
+    width: 95%;
+  }
+
+  #delete-group-button {
+    margin: auto; /* Centrar el botón */
+    margin-top: 20px; /* Espacio superior */
+    margin-bottom: 20px; /* Espacio inferior */
+    width: 200px; /* Establece un ancho específico para el botón */
+  }
+}
