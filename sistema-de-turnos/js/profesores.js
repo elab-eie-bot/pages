@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   console.log(messages); // Para verificar que se obtienen los mensajes
 
-  messages.forEach(msg => createMessage(msg.id, msg.title, msg.body, msg.comments));
+  //messages.forEach(msg => createMessage(msg.id, msg.title, msg.body, msg.comments));
 
   loadingElement.style.display = 'none';
 
