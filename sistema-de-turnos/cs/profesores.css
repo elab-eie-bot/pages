@@ -119,6 +119,26 @@ body {
     text-align: center; /* Centrar el contenido */
   }
 
+  #sources-container {
+    background-color: #f0f0f0;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    border-top: 1px solid #ccc;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
+
+  #sources-container a {
+    text-decoration: none;
+    margin: 0 10px;
+  }
+
+  #sources-container a:hover {
+    text-decoration: underline;
+  }
+
 /* Estilo de CSS para el sitio móvil */
 @media (max-width: 768px) {
   .main-container {
