@@ -1,12 +1,14 @@
 /**
- * Este archivo incluye los métodos que utiliza la página de estudiantes para enviar solicitudes correctamente.
- * 
- * @file estudiantes.js
+ * @fileoverview Este archivo incluye los métodos que utiliza la página de estudiantes para enviar solicitudes correctamente.
+ * Utiliza Google Apps Script para interactuar con Google Sheets y manejar el envío de formularios. Almacena la información
+ * de las solicitudes de los estudiantes en una hoja de cálculo de Google Sheets. Consultar por acceso a la cuenta de Google
+ * del laboratorio para poder editar los scripts de Google Apps (Carlos Araya Jiménez).
+ * @version 1.1
+ * @see https://script.google.com/u/2/home
  */
 
 /**
  * Función para cargar las opciones del menú desplegable desde Google Apps Script.
- * 
  * @function loadDropdownOptions
  * @returns {void}
  * @throws {error} Si hay un error al obtener los datos de Google Sheets.
@@ -25,7 +27,6 @@
   
 /**
  * Obtener las mesas disponibles desde el json y generar el menú desplegable.
- * 
  * @function getTables
  * @param {*} jsonData Información de las mesas obtenida desde Google Sheets.
  * @returns {void}
@@ -44,8 +45,7 @@
   }
 
 /**
- * Añadir event listeners a los elementos del menú desplegable.
- * 
+ * Añadir event listeners a los elementos del menú desplegable
  * @function addDropdownItemListeners
  * @returns {void}
  */
@@ -61,8 +61,7 @@
   }
 
 /**
- * Manejar la selección de la mesa y el envío del formulario.
- * 
+ * Manejar la selección de la mesa y el envío del formulario
  * @function selectTable
  * @param {HTMLElement} item Elemento del menú desplegable que fue seleccionado.
  * @returns {void}
@@ -74,8 +73,7 @@
   }
 
 /**
- * Abrir el menú desplegable y cargar las opciones.
- * 
+ * Abrir el menú desplegable y cargar las opciones
  * @function openDropdown
  * @returns {void}
  */
@@ -85,10 +83,9 @@
   }
 
 /**
- * Manejar el envío del formulario y la validación de datos. 
- * 
+ * Manejar el envío del formulario y la validación de datos
  * @function handleFormSubmission
- * @param {Event} event Evento de envío del formulario.
+ * @param {Event} event Evento de envío del formulario
  * @returns {void}
  */
   function handleFormSubmission(event) {
@@ -127,14 +124,14 @@
   }
   
 /**
- * Enviar los datos del formulario a Google Apps Script.
+ * Enviar los datos del formulario a Google Apps Script
  * 
- * @param {*} formData Datos del formulario a enviar.
- * @param {*} messageElement Elemento para mostrar mensajes al profesor.
- * @param {*} submitButton Elemento del botón de envío.
- * @param {*} form Formulario.
+ * @param {*} formData Datos del formulario a enviar
+ * @param {*} messageElement Elemento para mostrar mensajes al profesor
+ * @param {*} submitButton Elemento del botón de envío
+ * @param {*} form Formulario
  * @returns {void}
- * @throws {error} Si hay un error al enviar los datos.
+ * @throws {error} Si hay un error al enviar los datos
  */
   function submitFormData(formData, messageElement, submitButton, form) {
     // Cargar el script de Google Apps Script
@@ -169,7 +166,13 @@
     });
   }
   
-  // Añadir display de mensaje
+  /**
+   * Muestra un mensaje al usuario con el texto y color especificados
+   * @param {*} messageElement Elemento donde se muestra el mensaje
+   * @param {*} text Texto del mensaje a mostrar
+   * @param {*} color Color de fondo del mensaje
+   * @returns {void}
+   */
   function showMessage(messageElement, text, color) {
     messageElement.textContent = text;
     messageElement.style.backgroundColor = color;
