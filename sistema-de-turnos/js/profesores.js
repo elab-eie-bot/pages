@@ -1,12 +1,15 @@
 /**
- * Este archivo incluye los métodos que utiliza la página de profesores para actualizarse correctamente.
- * 
- * @file profesores.js
+ * @fileoverview Este archivo contiene funciones para manejar la interfaz de usuario de profesores
+ * del sistema de turnos, incluyendo la carga de mensajes, estadísticas y la eliminación de solicitudes.
+ * Utiliza Google Apps Script para guardar y recuperar información desde Google Sheets. Consultar por acceso
+ * a la cuenta de Google del laboratorio para poder editar los scripts de Google Apps (Carlos Araya Jiménez).
+ * @version 1.1
+ * @see https://script.google.com/u/2/home
  */
 
 /**
+ * Esta función obtiene las estadísticas actuales y actualiza el contenedor de estadísticas en la página.
  * @function reloadStatsContainer
- * @description Esta función obtiene las estadísticas actuales y actualiza el contenedor de estadísticas en la página.
  * @returns {void}
  * @throws {error} Si hay un error al obtener las estadísticas o al actualizar el contenedor.
  */
@@ -30,10 +33,9 @@ async function reloadStatsContainer() {
 
 /**
  * Obtener todos los mensajes actuales y recargar el contenedor de mensajes
- * 
  * @function reloadMessagesContainer
  * @returns {void}
- * @throws {error} Si hay un error al obtener los mensajes o al actualizar el contenedor.
+ * @throws {error} Si hay un error al obtener los mensajes o al actualizar el contenedor
  */
 async function reloadMessagesContainer() {
   try {
@@ -59,10 +61,9 @@ setInterval(reloadMessagesContainer, 5000); // Recargar cada 10 segundos
 
 /** 
  * Obtener las solicitudes actuales de Google Sheets
- * 
  * @function getGroups
  * @returns {void}
- * @throws {error} Si hay un error al obtener los datos de Google Sheets.
+ * @throws {error} Si hay un error al obtener los datos de Google Sheets
 */
 async function getGroups() {
   try {
@@ -164,7 +165,7 @@ async function deleteRowById(id) {
  * @function createGroupStats
  * @param {*} pending Cantidad de grupos pendientes, determinada por la cantidad de mesas con solicitudes abiertas
  * @returns {void}
- * @throws {error} Si hay un error al crear el elemento de estadísticas.
+ * @throws {error} Si hay un error al crear el elemento de estadísticas
  */
 function createGroupStats(registered, pending) {
   const nav = document.createElement('nav');
@@ -264,7 +265,7 @@ function createMessage(id, title, body, comments) {
  * Esperar a que el DOM esté completamente cargado antes de ejecutar el código
  * @function DOMContentLoaded
  * @returns {void}
- * @throws {error} Si hay un error al cargar el DOM o al obtener los mensajes.
+ * @throws {error} Si hay un error al cargar el DOM o al obtener los mensajes
  */
 document.addEventListener("DOMContentLoaded", async function () {
   const loadingElement = document.getElementById('loading');
@@ -339,7 +340,6 @@ async function checkNewRequests() {
 
 /**
  * Activar o desactivar sonido y cambiar el ícono de sonido
- * 
  * @function toggleSoundIcon
  * @returns {void}
  */
@@ -373,7 +373,6 @@ function toggleSoundIcon() {
 
 /**
  * Reproduce un audio de notificación cuando el audio se encuentra habilitado
- * 
  * @function playSoundAlert
  * @returns {void}
  * @throws {warn} Si se presenta un error de reproducción de sonido
@@ -396,7 +395,6 @@ function playSoundAlert() {
 
 /**
  * Función que elimina todas las solicitudes creadas
- * 
  * @function deleteAllRequests
  * @returns {void}
  * @throws {error} Si se presenta un error en la respuesta del servidor para eliminar todas las filas

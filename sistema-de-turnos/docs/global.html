@@ -156,7 +156,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line277">line 277</a>
+        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line264">line 264</a>
     </li></ul></dd>
     
 
@@ -186,7 +186,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Si hay un error al cargar el DOM o al obtener los mensajes.
+        Si hay un error al cargar el DOM o al obtener los mensajes
         </div>
     </dt>
     <dd></dd>
@@ -247,7 +247,7 @@
 
 
 <div class="description">
-    Añadir event listeners a los elementos del menú desplegable.
+    Añadir event listeners a los elementos del menú desplegable
 </div>
 
 
@@ -291,7 +291,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="estudiantes.js.html">estudiantes.js</a>, <a href="estudiantes.js.html#line46">line 46</a>
+        <a href="estudiantes.js.html">estudiantes.js</a>, <a href="estudiantes.js.html#line47">line 47</a>
     </li></ul></dd>
     
 
@@ -345,7 +345,142 @@
     
 
     
-    <h4 class="name" id="createGroupStats"><span class="type-signature"></span>createGroupStats<span class="signature">(registered, pending)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    <h4 class="name" id="checkNewRequests"><span class="type-signature"></span>checkNewRequests<span class="signature">()</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Revisar si hay solicitudes nuevas, comparando con las solicitudes anteriores e identificando si algún id no estaba presente
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line312">line 312</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Si se presenta un error al verificar si hay nuevas solicitudes
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="createGroupStats"><span class="type-signature"></span>createGroupStats<span class="signature">(pending)</span><span class="type-signature"> &rarr; {void}</span></h4>
     
 
     
@@ -385,29 +520,6 @@
     </thead>
 
     <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>registered</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">Cantidad de grupos registrados, determinada por la cantidad de mesas disponibles en el laboratorio</td>
-        </tr>
-
     
 
         <tr>
@@ -469,7 +581,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line152">line 152</a>
+        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line163">line 163</a>
     </li></ul></dd>
     
 
@@ -499,7 +611,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Si hay un error al crear el elemento de estadísticas.
+        Si hay un error al crear el elemento de estadísticas
         </div>
     </dt>
     <dd></dd>
@@ -722,7 +834,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line205">line 205</a>
+        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line213">line 213</a>
     </li></ul></dd>
     
 
@@ -805,7 +917,7 @@
     
 
     
-    <h4 class="name" id="deleteFirstMessage"><span class="type-signature"></span>deleteFirstMessage<span class="signature">()</span><span class="type-signature"> &rarr; {void}</span></h4>
+    <h4 class="name" id="deleteAllRequests"><span class="type-signature"></span>deleteAllRequests<span class="signature">()</span><span class="type-signature"> &rarr; {void}</span></h4>
     
 
     
@@ -813,7 +925,7 @@
 
 
 <div class="description">
-    Eliminar el primer mensaje en Google Sheets
+    Función que elimina todas las solicitudes creadas
 </div>
 
 
@@ -857,7 +969,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line245">line 245</a>
+        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line396">line 396</a>
     </li></ul></dd>
     
 
@@ -887,7 +999,191 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Si hay un error al eliminar el mensaje o al actualizar la fecha.
+        Si se presenta un error en la respuesta del servidor para eliminar todas las filas
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+
+    
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="deleteRowById"><span class="type-signature"></span>deleteRowById<span class="signature">(id)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Función reutilizable que permite eliminar una solicitud específica
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Número de fila que se quiere eliminar de Google Sheets -1</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line131">line 131</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+
+        
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Si hay un error al eliminar la fila
         </div>
     </dt>
     <dd></dd>
@@ -992,7 +1288,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line100">line 100</a>
+        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line103">line 103</a>
     </li></ul></dd>
     
 
@@ -1127,7 +1423,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line58">line 58</a>
+        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line62">line 62</a>
     </li></ul></dd>
     
 
@@ -1157,7 +1453,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Si hay un error al obtener los datos de Google Sheets.
+        Si hay un error al obtener los datos de Google Sheets
         </div>
     </dt>
     <dd></dd>
@@ -1311,7 +1607,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="estudiantes.js.html">estudiantes.js</a>, <a href="estudiantes.js.html#line26">line 26</a>
+        <a href="estudiantes.js.html">estudiantes.js</a>, <a href="estudiantes.js.html#line28">line 28</a>
     </li></ul></dd>
     
 
@@ -1373,7 +1669,7 @@
 
 
 <div class="description">
-    Manejar el envío del formulario y la validación de datos.
+    Manejar el envío del formulario y la validación de datos
 </div>
 
 
@@ -1425,7 +1721,7 @@
 
             
 
-            <td class="description last">Evento de envío del formulario.</td>
+            <td class="description last">Evento de envío del formulario</td>
         </tr>
 
     
@@ -1466,7 +1762,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="estudiantes.js.html">estudiantes.js</a>, <a href="estudiantes.js.html#line87">line 87</a>
+        <a href="estudiantes.js.html">estudiantes.js</a>, <a href="estudiantes.js.html#line85">line 85</a>
     </li></ul></dd>
     
 
@@ -1572,7 +1868,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="estudiantes.js.html">estudiantes.js</a>, <a href="estudiantes.js.html#line7">line 7</a>
+        <a href="estudiantes.js.html">estudiantes.js</a>, <a href="estudiantes.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -1663,7 +1959,7 @@
 
 
 <div class="description">
-    Abrir el menú desplegable y cargar las opciones.
+    Abrir el menú desplegable y cargar las opciones
 </div>
 
 
@@ -1707,7 +2003,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="estudiantes.js.html">estudiantes.js</a>, <a href="estudiantes.js.html#line76">line 76</a>
+        <a href="estudiantes.js.html">estudiantes.js</a>, <a href="estudiantes.js.html#line75">line 75</a>
     </li></ul></dd>
     
 
@@ -1730,6 +2026,168 @@
 
 
 
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
+    <h4 class="name" id="playSoundAlert"><span class="type-signature"></span>playSoundAlert<span class="signature">()</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Reproduce un audio de notificación cuando el audio se encuentra habilitado
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line374">line 374</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Throws:</h5>
+<ul>
+        <li>
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Si se presenta un error de reproducción de sonido
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">warn</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+</li>
+    
+        <li>
+
+<dl>
+    <dt>
+        <div class="param-desc">
+        Si el archivo de audio no se encuentra en la carpeta especificada
+        </div>
+    </dt>
+    <dd></dd>
+    <dt>
+        <dl>
+            <dt>
+                Type
+            </dt>
+            <dd>
+                
+<span class="param-type">error</span>
+
+
+            </dd>
+        </dl>
+    </dt>
+    <dd></dd>
+</dl>
+
+</li>
+    </ul>
 
 
 <h5>Returns:</h5>
@@ -1813,7 +2271,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line31">line 31</a>
+        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line34">line 34</a>
     </li></ul></dd>
     
 
@@ -1843,7 +2301,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Si hay un error al obtener los mensajes o al actualizar el contenedor.
+        Si hay un error al obtener los mensajes o al actualizar el contenedor
         </div>
     </dt>
     <dd></dd>
@@ -1948,7 +2406,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line7">line 7</a>
+        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line10">line 10</a>
     </li></ul></dd>
     
 
@@ -2039,7 +2497,7 @@
 
 
 <div class="description">
-    Manejar la selección de la mesa y el envío del formulario.
+    Manejar la selección de la mesa y el envío del formulario
 </div>
 
 
@@ -2186,6 +2644,207 @@
     
 
     
+    <h4 class="name" id="showMessage"><span class="type-signature"></span>showMessage<span class="signature">(messageElement, text, color)</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Muestra un mensaje al usuario con el texto y color especificados
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>messageElement</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Elemento donde se muestra el mensaje</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>text</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Texto del mensaje a mostrar</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>color</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">*</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Color de fondo del mensaje</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="estudiantes.js.html">estudiantes.js</a>, <a href="estudiantes.js.html#line176">line 176</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
+            
+
+    
+
+    
     <h4 class="name" id="submitFormData"><span class="type-signature"></span>submitFormData<span class="signature">(formData, messageElement, submitButton, form)</span><span class="type-signature"> &rarr; {void}</span></h4>
     
 
@@ -2194,7 +2853,7 @@
 
 
 <div class="description">
-    Enviar los datos del formulario a Google Apps Script.
+    Enviar los datos del formulario a Google Apps Script
 </div>
 
 
@@ -2246,7 +2905,7 @@
 
             
 
-            <td class="description last">Datos del formulario a enviar.</td>
+            <td class="description last">Datos del formulario a enviar</td>
         </tr>
 
     
@@ -2269,7 +2928,7 @@
 
             
 
-            <td class="description last">Elemento para mostrar mensajes al profesor.</td>
+            <td class="description last">Elemento para mostrar mensajes al profesor</td>
         </tr>
 
     
@@ -2292,7 +2951,7 @@
 
             
 
-            <td class="description last">Elemento del botón de envío.</td>
+            <td class="description last">Elemento del botón de envío</td>
         </tr>
 
     
@@ -2315,7 +2974,7 @@
 
             
 
-            <td class="description last">Formulario.</td>
+            <td class="description last">Formulario</td>
         </tr>
 
     
@@ -2356,7 +3015,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="estudiantes.js.html">estudiantes.js</a>, <a href="estudiantes.js.html#line139">line 139</a>
+        <a href="estudiantes.js.html">estudiantes.js</a>, <a href="estudiantes.js.html#line136">line 136</a>
     </li></ul></dd>
     
 
@@ -2386,7 +3045,7 @@
 <dl>
     <dt>
         <div class="param-desc">
-        Si hay un error al enviar los datos.
+        Si hay un error al enviar los datos
         </div>
     </dt>
     <dd></dd>
@@ -2434,6 +3093,112 @@
 
 
         
+            
+
+    
+
+    
+    <h4 class="name" id="toggleSoundIcon"><span class="type-signature"></span>toggleSoundIcon<span class="signature">()</span><span class="type-signature"> &rarr; {void}</span></h4>
+    
+
+    
+
+
+
+<div class="description">
+    Activar o desactivar sonido y cambiar el ícono de sonido
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<dl class="details">
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="profesores.js.html">profesores.js</a>, <a href="profesores.js.html#line341">line 341</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">void</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+
+
+
+        
     
 
     
@@ -2449,13 +3214,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#DOMContentLoaded">DOMContentLoaded</a></li><li><a href="global.html#addDropdownItemListeners">addDropdownItemListeners</a></li><li><a href="global.html#createGroupStats">createGroupStats</a></li><li><a href="global.html#createMessage">createMessage</a></li><li><a href="global.html#deleteFirstMessage">deleteFirstMessage</a></li><li><a href="global.html#getCount">getCount</a></li><li><a href="global.html#getGroups">getGroups</a></li><li><a href="global.html#getTables">getTables</a></li><li><a href="global.html#handleFormSubmission">handleFormSubmission</a></li><li><a href="global.html#loadDropdownOptions">loadDropdownOptions</a></li><li><a href="global.html#openDropdown">openDropdown</a></li><li><a href="global.html#reloadMessagesContainer">reloadMessagesContainer</a></li><li><a href="global.html#reloadStatsContainer">reloadStatsContainer</a></li><li><a href="global.html#selectTable">selectTable</a></li><li><a href="global.html#submitFormData">submitFormData</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#DOMContentLoaded">DOMContentLoaded</a></li><li><a href="global.html#addDropdownItemListeners">addDropdownItemListeners</a></li><li><a href="global.html#checkNewRequests">checkNewRequests</a></li><li><a href="global.html#createGroupStats">createGroupStats</a></li><li><a href="global.html#createMessage">createMessage</a></li><li><a href="global.html#deleteAllRequests">deleteAllRequests</a></li><li><a href="global.html#deleteRowById">deleteRowById</a></li><li><a href="global.html#getCount">getCount</a></li><li><a href="global.html#getGroups">getGroups</a></li><li><a href="global.html#getTables">getTables</a></li><li><a href="global.html#handleFormSubmission">handleFormSubmission</a></li><li><a href="global.html#loadDropdownOptions">loadDropdownOptions</a></li><li><a href="global.html#openDropdown">openDropdown</a></li><li><a href="global.html#playSoundAlert">playSoundAlert</a></li><li><a href="global.html#reloadMessagesContainer">reloadMessagesContainer</a></li><li><a href="global.html#reloadStatsContainer">reloadStatsContainer</a></li><li><a href="global.html#selectTable">selectTable</a></li><li><a href="global.html#showMessage">showMessage</a></li><li><a href="global.html#submitFormData">submitFormData</a></li><li><a href="global.html#toggleSoundIcon">toggleSoundIcon</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Apr 27 2025 20:30:05 GMT-0600 (Central Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon May 26 2025 08:48:40 GMT-0600 (Central Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

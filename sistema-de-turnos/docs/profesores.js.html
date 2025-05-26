@@ -27,14 +27,17 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Este archivo incluye los métodos que utiliza la página de profesores para actualizarse correctamente.
- * 
- * @file profesores.js
+ * @fileoverview Este archivo contiene funciones para manejar la interfaz de usuario de profesores
+ * del sistema de turnos, incluyendo la carga de mensajes, estadísticas y la eliminación de solicitudes.
+ * Utiliza Google Apps Script para guardar y recuperar información desde Google Sheets. Consultar por acceso
+ * a la cuenta de Google del laboratorio para poder editar los scripts de Google Apps (Carlos Araya Jiménez).
+ * @version 1.1
+ * @see https://script.google.com/u/2/home
  */
 
 /**
+ * Esta función obtiene las estadísticas actuales y actualiza el contenedor de estadísticas en la página.
  * @function reloadStatsContainer
- * @description Esta función obtiene las estadísticas actuales y actualiza el contenedor de estadísticas en la página.
  * @returns {void}
  * @throws {error} Si hay un error al obtener las estadísticas o al actualizar el contenedor.
  */
@@ -58,10 +61,9 @@ async function reloadStatsContainer() {
 
 /**
  * Obtener todos los mensajes actuales y recargar el contenedor de mensajes
- * 
  * @function reloadMessagesContainer
  * @returns {void}
- * @throws {error} Si hay un error al obtener los mensajes o al actualizar el contenedor.
+ * @throws {error} Si hay un error al obtener los mensajes o al actualizar el contenedor
  */
 async function reloadMessagesContainer() {
   try {
@@ -77,18 +79,19 @@ async function reloadMessagesContainer() {
   } catch (error) {
     console.error("Error al recargar el contenedor de mensajes:", error);
   }
+
+  checkNewRequests();
 }
 
 // Configurar intervalos para recargar los contenedores periódicamente
-setInterval(reloadStatsContainer, 10000); // Recargar cada 10 segundos
-setInterval(reloadMessagesContainer, 10000); // Recargar cada 10 segundos
+setInterval(reloadStatsContainer, 5000); // Recargar cada 10 segundos
+setInterval(reloadMessagesContainer, 5000); // Recargar cada 10 segundos
 
 /** 
  * Obtener las solicitudes actuales de Google Sheets
- * 
  * @function getGroups
  * @returns {void}
- * @throws {error} Si hay un error al obtener los datos de Google Sheets.
+ * @throws {error} Si hay un error al obtener los datos de Google Sheets
 */
 async function getGroups() {
   try {
@@ -105,7 +108,7 @@ async function getGroups() {
 
     // Crear la constante messages
     const messages = data.map(row => ({
-      id: row[1],
+      id: row[0],
       title: row[2], // Columna B
       body: row[3],   // Columna C
       comments: row[4]
@@ -153,38 +156,44 @@ async function getCount() {
   }
 }
 
-async function updateDateById(id) {
+/**
+ * Función reutilizable que permite eliminar una solicitud específica
+ * @function deleteRowById
+ * @param {*} id Número de fila que se quiere eliminar de Google Sheets -1
+ * @returns {void}
+ * @throws {error} Si hay un error al eliminar la fila
+ */
+async function deleteRowById(id) {
   try {
-    console.log("Update group: ", id);
-    const scriptUrl = 'https://script.google.com/macros/s/AKfycbwDjWQxfxUyX1PbTV3VcyhiTkzMCQXhyqfm9H4em3SJKVOAdMpoWgN2nY7dFVDWg2NE/exec';
-    const formDataString = `id=${encodeURIComponent(id)}`;
+    console.log("Eliminar fila con ID: ", id); // Verifica el valor del ID
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbxSZTpRXCeZyguUoS2Aoj8Kfub6MNkoTmEGAW4q5EDokFvhnqJ2gaXs90osIPT9yl6J/exec';
+    const formDataString = `id=${encodeURIComponent(id)}`; // Enviar ID como parámetro
     const response = await fetch(scriptUrl, {
       method: 'POST',
       headers: {
-        "Content-Type": "text/plain;charset=utf-8"
+        "Content-Type": "application/x-www-form-urlencoded" // Enviar como formulario URL codificado
       },
-      body: formDataString
+      body: formDataString // Enviar el ID
     });
 
     if (!response.ok) {
-      throw new Error("Error en la solicitud de actualización");
+      throw new Error("Error en la solicitud de eliminación");
     }
 
-    const result = await response.json();
+    const result = await response.text(); // Obtener respuesta como texto
     console.log(result); // Verifica la respuesta del servidor
   } catch (error) {
-    console.error("Error al actualizar la fecha:", error);
+    console.error("Error al eliminar la fila:", error);
   }
 }
 
+
 /**
  * Crear elemento de estadísticas y agregarlas al contenedor
- * 
  * @function createGroupStats
- * @param {*} registered Cantidad de grupos registrados, determinada por la cantidad de mesas disponibles en el laboratorio
  * @param {*} pending Cantidad de grupos pendientes, determinada por la cantidad de mesas con solicitudes abiertas
  * @returns {void}
- * @throws {error} Si hay un error al crear el elemento de estadísticas.
+ * @throws {error} Si hay un error al crear el elemento de estadísticas
  */
 function createGroupStats(registered, pending) {
   const nav = document.createElement('nav');
@@ -192,7 +201,6 @@ function createGroupStats(registered, pending) {
 
   // Crear los elementos de estadísticas
   const stats = [
-    { heading: 'Grupos Registrados', title: registered },
     { heading: 'Grupos Pendientes', title: pending },
   ];
 
@@ -232,7 +240,6 @@ function createGroupStats(registered, pending) {
 
 /**
  * Crear un mensaje y agregarlo al contenedor de mensajes
- * 
  * @function createMessage
  * @param {*} id ID del mensaje
  * @param {*} title Título del mensaje
@@ -250,6 +257,18 @@ function createMessage(id, title, body, comments) {
   const header = document.createElement('div');
   header.className = "message-header"; // Agregar la clase "message-header"
   header.innerHTML = `&lt;p>${title}&lt;/p>`; // Solo muestra el título
+
+  // Crear botón para eliminar mensaje
+  const btnDelete = document.createElement('button');
+  btnDelete.className = 'delete';
+  btnDelete.onclick = async () => {
+    await deleteRowById(id + 1);      // Espera que se complete
+    reloadMessagesContainer();        // Luego recarga mensajes
+    reloadStatsContainer();           // Y las estadísticas
+    console.log("Mensaje eliminado");
+  };
+
+  header.appendChild(btnDelete); // Unir botón de eliminación al header
   
   // Crear el cuerpo del mensaje
   const bodyDiv = document.createElement('div');
@@ -271,43 +290,10 @@ function createMessage(id, title, body, comments) {
 }
 
 /**
- * Eliminar el primer mensaje en Google Sheets
- * 
- * @function deleteFirstMessage
- * @returns {void}
- * @throws {error} Si hay un error al eliminar el mensaje o al actualizar la fecha.
- */
-async function deleteFirstMessage() {
-  const messageContainer = document.getElementById('messages-container'); // Obtener el contenedor de mensajes
-  const firstMessage = messageContainer.querySelector('article'); // Seleccionar el primer mensaje
-
-  // Verificar que no esté vacío el contenedor
-  if (firstMessage) {
-    // Obtener el ID del primer mensaje (está en un párrafo oculto)
-    const messageId = firstMessage.querySelector('#message-id').textContent;
-
-    // Enviar la solicitud de actualización a Google Apps Script
-    await updateDateById(messageId); // Llamar a la función para actualizar la fecha en Google Sheets
-
-    // Eliminar el primer mensaje
-    messageContainer.removeChild(firstMessage);
-
-    console.log("Primer mensaje eliminado y fecha actualizada."); // Mensaje de éxito
-    
-    // Recargar las ventanas sin recargar toda la página
-    reloadStatsContainer();
-    reloadMessagesContainer();
-  } else {
-    console.log("No hay mensajes para eliminar.");
-  }
-}
-
-/**
  * Esperar a que el DOM esté completamente cargado antes de ejecutar el código
- * 
  * @function DOMContentLoaded
  * @returns {void}
- * @throws {error} Si hay un error al cargar el DOM o al obtener los mensajes.
+ * @throws {error} Si hay un error al cargar el DOM o al obtener los mensajes
  */
 document.addEventListener("DOMContentLoaded", async function () {
   const loadingElement = document.getElementById('loading');
@@ -326,11 +312,11 @@ document.addEventListener("DOMContentLoaded", async function () {
 
   // Cargar estadísticas
   var stats = await getCount();
-  createGroupStats(stats.TotalOptions, stats.OpenRequests); // Puedes cambiar estos números según los datos reales
+  createGroupStats(stats.TotalOptions, stats.OpenRequests);
 
   console.log(messages); // Para verificar que se obtienen los mensajes
 
-  messages.forEach(msg => createMessage(msg.id, msg.title, msg.body, msg.comments));
+  //messages.forEach(msg => createMessage(msg.id, msg.title, msg.body, msg.comments));
 
   loadingElement.style.display = 'none';
 
@@ -342,9 +328,127 @@ document.addEventListener("DOMContentLoaded", async function () {
   }
   // Agregar evento al botón de eliminar
   const deleteButton = document.getElementById('delete-group-button');
-  deleteButton.addEventListener('click', deleteFirstMessage);
+  deleteButton.addEventListener('click', async () => {
+    // Eliminar todos los request desde la columna 2
+    await deleteAllRequests();
+    // Recargar contenedores y estadísticas
+    reloadMessagesContainer();
+    reloadStatsContainer();
+  });
 });
-</code></pre>
+
+/**
+ * Revisar si hay solicitudes nuevas, comparando con las solicitudes anteriores e identificando si algún id no estaba presente
+ * @function checkNewRequests
+ * @returns {void}
+ * @throws {error} Si se presenta un error al verificar si hay nuevas solicitudes
+ */
+async function checkNewRequests() {
+  try {
+    const currentMessages = await getGroups(); // Obtener los mensajes actuales
+    const currentIds = currentMessages.map(msg => msg.id); // Mapear los ids actuales a una variable
+
+    // Comparar los ids actuales con los ids que se tenía anteriormente, si se encuentra alguno no mapeado anteriormente, se guarda el newMessages
+    const newMessages = currentIds.filter(id => !previousRequestIds.includes(id));
+
+    // Si el tamaño de los mensajes nuevos y de los requests anteriores es mayor a 0, activar alerta de sonido
+    if (newMessages.length > 0) {
+      console.log("Nuevas solicitudes detectadas", newMessages);
+      if (soundEnabled) {
+        playSoundAlert();
+      }
+    }
+
+    previousRequestIds = currentIds; // Actualizar la lista para la próxima comparación
+  } catch (error) {
+    console.error("Error al verificar nuevas solicitudes:", error);
+  }
+}
+
+
+/**
+ * Activar o desactivar sonido y cambiar el ícono de sonido
+ * @function toggleSoundIcon
+ * @returns {void}
+ */
+function toggleSoundIcon() {
+  // Cargar ícono de los elementos del html
+  const icon = document.getElementById("sound-icon");
+
+  // Si el sonido está actualmente habilitado, cuando se presiona este botón, se quiere desactivar
+  if(soundEnabled) {
+    soundEnabled = false; // Deshabilitar sonido
+    icon.src = "imgs/mute.png"; // Cambiar ícono al de mute
+    // Loggear actividad en la terminal
+    console.log("Sonido desactivado");
+  } else {
+    // Solicitar confirmación para habilitar sonidos de notificación
+    const userConfirmation = confirm("¿Quieres habilitar los sonidos de notificación?");
+    // Si confirma correctamente, habilitar sonido
+    if (userConfirmation) {
+      soundEnabled = true; // Habilitar sonido
+      icon.src = "imgs/volume.png" // Cambiar ícono al de volume
+      // Loggear actividad en la terminal
+      console.log("Sonido activado");
+    } else { // Si no se confirma, o se niega permiso, deshabilitar sonido
+      soundEnabled = false; // Deshabilitar sonido
+      // Loggear actividad en la terminal
+      console.log("El usuario no activó el sonido");
+    }
+  }
+  
+};
+
+/**
+ * Reproduce un audio de notificación cuando el audio se encuentra habilitado
+ * @function playSoundAlert
+ * @returns {void}
+ * @throws {warn} Si se presenta un error de reproducción de sonido
+ * @throws {error} Si el archivo de audio no se encuentra en la carpeta especificada
+ */
+function playSoundAlert() {
+  // Cargar audio
+  const audio = document.getElementById("alert-sound");
+  // Si el audio se cargó correctamente, reproducirlo
+  if (audio) {
+    audio.currentTime = 0; // Devolver al inicio
+    // Reproducir el audio, si se presenta un error de reproducción, alertarlo por medio de warning
+    audio.play().catch(err => {
+      console.warn("Error de reproducción de sonido:", err);
+    });
+  } else { // Si no se encuentra el archivo de audio, notificar error
+    console.error("Archivo de audio no encontrado!");
+  }
+}
+
+/**
+ * Función que elimina todas las solicitudes creadas
+ * @function deleteAllRequests
+ * @returns {void}
+ * @throws {error} Si se presenta un error en la respuesta del servidor para eliminar todas las filas
+ */
+async function deleteAllRequests() {
+  try {
+    console.log("Eliminar todas las filas"); // Informar ejecución de la función
+    const scriptUrl = 'https://script.google.com/macros/s/AKfycbyljauBqx6ik7qT1v6gF15xkM9mwLQQdBUABF8cUTjzCMtS6iMfqTdPV4KOjNQGB-kpcQ/exec';
+    const response = await fetch(scriptUrl, {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded" // Enviar como formulario URL codificado
+      },
+      body: new URLSearchParams({ deleteAll: 'true' }) // Enviar el ID
+    });
+
+    if (!response.ok) {
+      throw new Error("Error en la solicitud de eliminación");
+    }
+
+    const result = await response.text(); // Obtener respuesta como texto
+    console.log(result); // Verifica la respuesta del servidor
+  } catch (error) {
+    console.error("Error al eliminar la fila:", error);
+  }
+}</code></pre>
         </article>
     </section>
 
@@ -354,13 +458,13 @@ document.addEventListener("DOMContentLoaded", async function () {
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#DOMContentLoaded">DOMContentLoaded</a></li><li><a href="global.html#addDropdownItemListeners">addDropdownItemListeners</a></li><li><a href="global.html#createGroupStats">createGroupStats</a></li><li><a href="global.html#createMessage">createMessage</a></li><li><a href="global.html#deleteFirstMessage">deleteFirstMessage</a></li><li><a href="global.html#getCount">getCount</a></li><li><a href="global.html#getGroups">getGroups</a></li><li><a href="global.html#getTables">getTables</a></li><li><a href="global.html#handleFormSubmission">handleFormSubmission</a></li><li><a href="global.html#loadDropdownOptions">loadDropdownOptions</a></li><li><a href="global.html#openDropdown">openDropdown</a></li><li><a href="global.html#reloadMessagesContainer">reloadMessagesContainer</a></li><li><a href="global.html#reloadStatsContainer">reloadStatsContainer</a></li><li><a href="global.html#selectTable">selectTable</a></li><li><a href="global.html#submitFormData">submitFormData</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#DOMContentLoaded">DOMContentLoaded</a></li><li><a href="global.html#addDropdownItemListeners">addDropdownItemListeners</a></li><li><a href="global.html#checkNewRequests">checkNewRequests</a></li><li><a href="global.html#createGroupStats">createGroupStats</a></li><li><a href="global.html#createMessage">createMessage</a></li><li><a href="global.html#deleteAllRequests">deleteAllRequests</a></li><li><a href="global.html#deleteRowById">deleteRowById</a></li><li><a href="global.html#getCount">getCount</a></li><li><a href="global.html#getGroups">getGroups</a></li><li><a href="global.html#getTables">getTables</a></li><li><a href="global.html#handleFormSubmission">handleFormSubmission</a></li><li><a href="global.html#loadDropdownOptions">loadDropdownOptions</a></li><li><a href="global.html#openDropdown">openDropdown</a></li><li><a href="global.html#playSoundAlert">playSoundAlert</a></li><li><a href="global.html#reloadMessagesContainer">reloadMessagesContainer</a></li><li><a href="global.html#reloadStatsContainer">reloadStatsContainer</a></li><li><a href="global.html#selectTable">selectTable</a></li><li><a href="global.html#showMessage">showMessage</a></li><li><a href="global.html#submitFormData">submitFormData</a></li><li><a href="global.html#toggleSoundIcon">toggleSoundIcon</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Apr 27 2025 20:30:05 GMT-0600 (Central Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon May 26 2025 08:48:40 GMT-0600 (Central Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>

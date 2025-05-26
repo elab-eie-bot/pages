@@ -27,14 +27,16 @@
     <section>
         <article>
             <pre class="prettyprint source linenums"><code>/**
- * Este archivo incluye los métodos que utiliza la página de estudiantes para enviar solicitudes correctamente.
- * 
- * @file estudiantes.js
+ * @fileoverview Este archivo incluye los métodos que utiliza la página de estudiantes para enviar solicitudes correctamente.
+ * Utiliza Google Apps Script para interactuar con Google Sheets y manejar el envío de formularios. Almacena la información
+ * de las solicitudes de los estudiantes en una hoja de cálculo de Google Sheets. Consultar por acceso a la cuenta de Google
+ * del laboratorio para poder editar los scripts de Google Apps (Carlos Araya Jiménez).
+ * @version 1.1
+ * @see https://script.google.com/u/2/home
  */
 
 /**
  * Función para cargar las opciones del menú desplegable desde Google Apps Script.
- * 
  * @function loadDropdownOptions
  * @returns {void}
  * @throws {error} Si hay un error al obtener los datos de Google Sheets.
@@ -53,7 +55,6 @@
   
 /**
  * Obtener las mesas disponibles desde el json y generar el menú desplegable.
- * 
  * @function getTables
  * @param {*} jsonData Información de las mesas obtenida desde Google Sheets.
  * @returns {void}
@@ -72,8 +73,7 @@
   }
 
 /**
- * Añadir event listeners a los elementos del menú desplegable.
- * 
+ * Añadir event listeners a los elementos del menú desplegable
  * @function addDropdownItemListeners
  * @returns {void}
  */
@@ -89,8 +89,7 @@
   }
 
 /**
- * Manejar la selección de la mesa y el envío del formulario.
- * 
+ * Manejar la selección de la mesa y el envío del formulario
  * @function selectTable
  * @param {HTMLElement} item Elemento del menú desplegable que fue seleccionado.
  * @returns {void}
@@ -102,8 +101,7 @@
   }
 
 /**
- * Abrir el menú desplegable y cargar las opciones.
- * 
+ * Abrir el menú desplegable y cargar las opciones
  * @function openDropdown
  * @returns {void}
  */
@@ -113,10 +111,9 @@
   }
 
 /**
- * Manejar el envío del formulario y la validación de datos. 
- * 
+ * Manejar el envío del formulario y la validación de datos
  * @function handleFormSubmission
- * @param {Event} event Evento de envío del formulario.
+ * @param {Event} event Evento de envío del formulario
  * @returns {void}
  */
   function handleFormSubmission(event) {
@@ -155,41 +152,55 @@
   }
   
 /**
- * Enviar los datos del formulario a Google Apps Script.
+ * Enviar los datos del formulario a Google Apps Script
  * 
- * @param {*} formData Datos del formulario a enviar.
- * @param {*} messageElement Elemento para mostrar mensajes al profesor.
- * @param {*} submitButton Elemento del botón de envío.
- * @param {*} form Formulario.
+ * @param {*} formData Datos del formulario a enviar
+ * @param {*} messageElement Elemento para mostrar mensajes al profesor
+ * @param {*} submitButton Elemento del botón de envío
+ * @param {*} form Formulario
  * @returns {void}
- * @throws {error} Si hay un error al enviar los datos.
+ * @throws {error} Si hay un error al enviar los datos
  */
   function submitFormData(formData, messageElement, submitButton, form) {
     // Cargar el script de Google Apps Script
-    fetch('https://script.google.com/macros/s/AKfycbyFBRuxbXbuOJnsIdTGgX9vhFzdIDQaldkcspRFBDyur9jCbunAHXssne3tzxJJA3xz2A/exec', { 
+    fetch('https://script.google.com/macros/s/AKfycby2mGCmxxW6U1LTb66MlzKXZ0VewXT8xzX6q9Z8ibjbPvI53y2jQE1T3b8Q1VMlc9X19A/exec', { 
       method: 'POST',
       body: formData
     })
     .then(response => response.text())
     .then(data => {
-      // Indicar que el envío fue exitoso
-      showMessage(messageElement, "Datos enviados correctamente!", "green");
+      // Mostrar respuesta del servidor
+      console.log("Respuesta del servidor:", data);
+
+      // Cambiar el comportamiento dependiendo de la respuesta del servidor
+      if (data.startsWith("Error")) { // Error: ya existe el registro, se muestra en rojo
+        showMessage(messageElement, data, "red");
+      } else { // Registro agregado correctamente: se muestra en verde
+        showMessage(messageElement, data, "green");
+        form.reset();
+        document.querySelector(".dropdown-trigger button span").textContent = "Seleccionar mesa"; // Resetear dropdown
+      }
+
       submitButton.disabled = false;
-      form.reset();
-      document.querySelector(".dropdown-trigger button span").textContent = "Seleccionar mesa"; // Resetear dropdown
   
       setTimeout(() => {
         messageElement.style.display = "none";
-      }, 1000);
+      }, 2000);
     })
     .catch(error => {
-      console.error(error);
+      console.error("Error de red: ", error);
       showMessage(messageElement, "Ocurrió un error al enviar el formulario.", "red");
       submitButton.disabled = false;
     });
   }
   
-  // Añadir display de mensaje
+  /**
+   * Muestra un mensaje al usuario con el texto y color especificados
+   * @param {*} messageElement Elemento donde se muestra el mensaje
+   * @param {*} text Texto del mensaje a mostrar
+   * @param {*} color Color de fondo del mensaje
+   * @returns {void}
+   */
   function showMessage(messageElement, text, color) {
     messageElement.textContent = text;
     messageElement.style.backgroundColor = color;
@@ -199,6 +210,11 @@
   
   // Establecer el evento de clic para abrir el menú desplegable
   document.getElementById("form").addEventListener("submit", handleFormSubmission);
+
+  // Cargar el contenido del dropdown cuando se carga la página
+  document.addEventListener('DOMContentLoaded', function () {
+    loadDropdownOptions();
+  });
   </code></pre>
         </article>
     </section>
@@ -209,13 +225,13 @@
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#DOMContentLoaded">DOMContentLoaded</a></li><li><a href="global.html#addDropdownItemListeners">addDropdownItemListeners</a></li><li><a href="global.html#createGroupStats">createGroupStats</a></li><li><a href="global.html#createMessage">createMessage</a></li><li><a href="global.html#deleteFirstMessage">deleteFirstMessage</a></li><li><a href="global.html#getCount">getCount</a></li><li><a href="global.html#getGroups">getGroups</a></li><li><a href="global.html#getTables">getTables</a></li><li><a href="global.html#handleFormSubmission">handleFormSubmission</a></li><li><a href="global.html#loadDropdownOptions">loadDropdownOptions</a></li><li><a href="global.html#openDropdown">openDropdown</a></li><li><a href="global.html#reloadMessagesContainer">reloadMessagesContainer</a></li><li><a href="global.html#reloadStatsContainer">reloadStatsContainer</a></li><li><a href="global.html#selectTable">selectTable</a></li><li><a href="global.html#submitFormData">submitFormData</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#DOMContentLoaded">DOMContentLoaded</a></li><li><a href="global.html#addDropdownItemListeners">addDropdownItemListeners</a></li><li><a href="global.html#checkNewRequests">checkNewRequests</a></li><li><a href="global.html#createGroupStats">createGroupStats</a></li><li><a href="global.html#createMessage">createMessage</a></li><li><a href="global.html#deleteAllRequests">deleteAllRequests</a></li><li><a href="global.html#deleteRowById">deleteRowById</a></li><li><a href="global.html#getCount">getCount</a></li><li><a href="global.html#getGroups">getGroups</a></li><li><a href="global.html#getTables">getTables</a></li><li><a href="global.html#handleFormSubmission">handleFormSubmission</a></li><li><a href="global.html#loadDropdownOptions">loadDropdownOptions</a></li><li><a href="global.html#openDropdown">openDropdown</a></li><li><a href="global.html#playSoundAlert">playSoundAlert</a></li><li><a href="global.html#reloadMessagesContainer">reloadMessagesContainer</a></li><li><a href="global.html#reloadStatsContainer">reloadStatsContainer</a></li><li><a href="global.html#selectTable">selectTable</a></li><li><a href="global.html#showMessage">showMessage</a></li><li><a href="global.html#submitFormData">submitFormData</a></li><li><a href="global.html#toggleSoundIcon">toggleSoundIcon</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sun Apr 27 2025 20:30:05 GMT-0600 (Central Standard Time)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Mon May 26 2025 08:48:40 GMT-0600 (Central Standard Time)
 </footer>
 
 <script> prettyPrint(); </script>
